@@ -1,65 +1,144 @@
+import React, { useState } from 'react';
+
+// Import all local images
+import proyecto1 from '../assets/images/proyecto_1.WebP';
+import proyecto2 from '../assets/images/proyecto_2.WebP';
+import proyecto3 from '../assets/images/proyecto_3.WebP';
+import proyecto4 from '../assets/images/proyecto_4.WebP';
+import proyecto5 from '../assets/images/proyecto_5.WebP';
+import proyecto6 from '../assets/images/proyecto_6.WebP';
+import proyecto7 from '../assets/images/proyecto_7.WebP';
+import proyecto8 from '../assets/images/proyecto_8.WebP';
+import proyecto9 from '../assets/images/proyecto_9.WebP';
+import proyecto10 from '../assets/images/proyecto_10.WebP';
+import proyecto11 from '../assets/images/proyecto_11.WebP';
+import proyecto12 from '../assets/images/proyecto_12.WebP';
+import proyecto13 from '../assets/images/proyecto_13.WebP';
+import proyecto14 from '../assets/images/proyecto_14.WebP';
+import sauna1 from '../assets/images/sauna_1.WebP';
+import sauna2 from '../assets/images/sauna_2.WebP';
+import sauna3 from '../assets/images/sauna_3.WebP';
+import sauna4 from '../assets/images/sauna_4.WebP';
+import sauna5 from '../assets/images/sauna_5.WebP';
+import tinaja6 from '../assets/images/tinaja_6.WebP';
+import tinaMatanza from '../assets/images/tina_matanza.jpg';
+import tinaMaiten from '../assets/images/tina_maiten.jpg';
+
 const Galeria = () => {
-  const proyectos = [
-    {
-      title: 'Tina de Cedro Artesanal',
-      subtitle: 'Fabricación a medida para terraza',
-      gradient: 'from-purple-500 to-purple-700',
-    },
-    {
-      title: 'Sauna Finlandés Premium',
-      subtitle: 'Madera de pino y cedro canadiense',
-      gradient: 'from-pink-500 to-red-500',
-    },
-    {
-      title: 'Taller de Fabricación',
-      subtitle: 'Proceso artesanal de construcción',
-      gradient: 'from-cyan-500 to-blue-500',
-    },
-    {
-      title: 'Tina Exterior de Roble',
-      subtitle: 'Diseño rústico personalizado',
-      gradient: 'from-green-500 to-teal-500',
-    },
-    {
-      title: 'Sauna de Madera Maciza',
-      subtitle: 'Construcción tradicional escandinava',
-      gradient: 'from-orange-500 to-yellow-500',
-    },
-    {
-      title: 'Proyecto Personalizado',
-      subtitle: 'Spa completo en madera noble',
-      gradient: 'from-indigo-500 to-purple-900',
-    },
-  ]
+  const [filter, setFilter] = useState('all');
+
+  const images = [
+    { src: proyecto1, category: 'proyecto', title: 'Proyecto 1' },
+    { src: proyecto2, category: 'proyecto', title: 'Proyecto 2' },
+    { src: proyecto3, category: 'proyecto', title: 'Proyecto 3' },
+    { src: proyecto4, category: 'proyecto', title: 'Proyecto 4' },
+    { src: proyecto5, category: 'proyecto', title: 'Proyecto 5' },
+    { src: proyecto6, category: 'proyecto', title: 'Proyecto 6' },
+    { src: proyecto7, category: 'proyecto', title: 'Proyecto 7' },
+    { src: proyecto8, category: 'proyecto', title: 'Proyecto 8' },
+    { src: proyecto9, category: 'proyecto', title: 'Proyecto 9' },
+    { src: proyecto10, category: 'proyecto', title: 'Proyecto 10' },
+    { src: proyecto11, category: 'proyecto', title: 'Proyecto 11' },
+    { src: proyecto12, category: 'proyecto', title: 'Proyecto 12' },
+    { src: proyecto13, category: 'proyecto', title: 'Proyecto 13' },
+    { src: proyecto14, category: 'proyecto', title: 'Proyecto 14' },
+    { src: sauna1, category: 'sauna', title: 'Sauna Finlandés' },
+    { src: sauna2, category: 'sauna', title: 'Sauna Premium' },
+    { src: sauna3, category: 'sauna', title: 'Sauna Artesanal' },
+    { src: sauna4, category: 'sauna', title: 'Sauna Exterior' },
+    { src: sauna5, category: 'sauna', title: 'Sauna Tradicional' },
+    { src: tinaja6, category: 'tinaja', title: 'Tinaja de Madera' },
+    { src: tinaMatanza, category: 'tinaja', title: 'Tina Matanza' },
+    { src: tinaMaiten, category: 'tinaja', title: 'Tina Maitén' },
+  ];
+
+  const filteredImages = filter === 'all' ? images : images.filter(image => image.category === filter);
 
   return (
-    <section id="galeria" className="py-20 bg-gray-50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-serif font-bold text-gray-900 mb-4">
+    <section id="galeria" className="py-20 bg-gradient-to-br from-slate-800 via-slate-700 to-slate-800 relative overflow-hidden">
+      {/* Elementos decorativos de fondo */}
+      <div className="absolute inset-0 opacity-5">
+        <div className="absolute top-10 right-20 w-40 h-40 border-2 border-gold rounded-lg rotate-12"></div>
+        <div className="absolute bottom-20 left-20 w-32 h-32 border-2 border-gold rounded-lg -rotate-12"></div>
+        <div className="absolute top-1/2 right-1/3 w-28 h-28 border-2 border-gold rounded-lg rotate-45"></div>
+      </div>
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        <div className="text-center mb-12">
+          <h2 className="text-4xl md:text-5xl font-serif font-bold text-white mb-4">
             Galería de Proyectos
           </h2>
-          <div className="w-20 h-1 gradient-primary mx-auto rounded-full"></div>
+          <div className="w-20 h-1 bg-gradient-to-r from-gold to-gold-dark mx-auto rounded-full mb-6"></div>
+          <p className="text-gold-light text-lg mb-8 max-w-2xl mx-auto">
+            Explora nuestros proyectos completados y encuentra inspiración para tu próximo espacio de relajación
+          </p>
+          <div className="flex justify-center flex-wrap gap-4">
+            <button
+              onClick={() => setFilter('all')}
+              className={`px-6 py-3 rounded-full font-semibold transition-all duration-300 transform hover:scale-105 ${
+                filter === 'all'
+                  ? 'bg-gradient-to-r from-gold to-gold-dark text-slate-900 shadow-lg shadow-gold/50'
+                  : 'bg-white/10 backdrop-blur-sm text-gold border-2 border-gold/30 hover:border-gold hover:bg-white/20'
+              }`}
+            >
+              Todos
+            </button>
+            <button
+              onClick={() => setFilter('tinaja')}
+              className={`px-6 py-3 rounded-full font-semibold transition-all duration-300 transform hover:scale-105 ${
+                filter === 'tinaja'
+                  ? 'bg-gradient-to-r from-gold to-gold-dark text-slate-900 shadow-lg shadow-gold/50'
+                  : 'bg-white/10 backdrop-blur-sm text-gold border-2 border-gold/30 hover:border-gold hover:bg-white/20'
+              }`}
+            >
+              Tinajas
+            </button>
+            <button
+              onClick={() => setFilter('sauna')}
+              className={`px-6 py-3 rounded-full font-semibold transition-all duration-300 transform hover:scale-105 ${
+                filter === 'sauna'
+                  ? 'bg-gradient-to-r from-gold to-gold-dark text-slate-900 shadow-lg shadow-gold/50'
+                  : 'bg-white/10 backdrop-blur-sm text-gold border-2 border-gold/30 hover:border-gold hover:bg-white/20'
+              }`}
+            >
+              Saunas
+            </button>
+          </div>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {proyectos.map((proyecto, index) => (
+          {filteredImages.map((image, index) => (
             <div
               key={index}
-              className="relative h-80 rounded-2xl overflow-hidden group cursor-pointer"
+              className="relative h-80 rounded-2xl overflow-hidden group cursor-pointer border-2 border-gold/30 hover:border-gold transition-all duration-300 shadow-xl hover:shadow-2xl hover:shadow-gold/50"
             >
-              <div className={`absolute inset-0 bg-gradient-to-br ${proyecto.gradient} transition-transform duration-300 group-hover:scale-110`}></div>
-              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-              <div className="absolute bottom-0 left-0 right-0 p-6 text-white transform translate-y-full group-hover:translate-y-0 transition-transform duration-300">
-                <h4 className="text-2xl font-bold mb-2">{proyecto.title}</h4>
-                <p className="text-white/90">{proyecto.subtitle}</p>
+              <img
+                src={image.src}
+                alt={image.title}
+                className="w-full h-full object-cover transition-transform duration-500 transform group-hover:scale-110"
+              />
+              {/* Overlay con gradiente */}
+              <div className="absolute inset-0 bg-gradient-to-t from-slate-900/90 via-slate-900/40 to-transparent opacity-60 group-hover:opacity-90 transition-opacity duration-300"></div>
+              
+              {/* Contenido del overlay */}
+              <div className="absolute bottom-0 left-0 right-0 p-6 transform translate-y-6 group-hover:translate-y-0 transition-transform duration-300">
+                <span className="inline-block px-3 py-1 bg-gradient-to-r from-gold to-gold-dark text-slate-900 rounded-full text-sm font-semibold">
+                  {image.category === 'tinaja' ? 'Tinaja' : image.category === 'sauna' ? 'Sauna' : 'Proyecto'}
+                </span>
+              </div>
+              
+              {/* Icono de ampliar */}
+              <div className="absolute top-4 right-4 bg-gold text-slate-900 p-2 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0zM10 7v6m3-3H7" />
+                </svg>
               </div>
             </div>
           ))}
         </div>
       </div>
     </section>
-  )
-}
+  );
+};
 
 export default Galeria

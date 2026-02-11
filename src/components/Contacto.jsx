@@ -54,29 +54,39 @@ const Contacto = () => {
   ]
 
   return (
-    <section id="contacto" className="py-20 bg-gray-50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section id="contacto" className="py-20 bg-gradient-to-br from-slate-800 via-slate-700 to-slate-800 relative overflow-hidden">
+      {/* Elementos decorativos de fondo */}
+      <div className="absolute inset-0 opacity-5">
+        <div className="absolute top-10 left-20 w-40 h-40 border-2 border-gold rounded-lg rotate-12"></div>
+        <div className="absolute bottom-20 right-20 w-48 h-48 border-2 border-gold rounded-lg -rotate-12"></div>
+        <div className="absolute top-1/2 left-1/3 w-32 h-32 border-2 border-gold rounded-lg rotate-45"></div>
+      </div>
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-serif font-bold text-gray-900 mb-4">
+          <h2 className="text-4xl md:text-5xl font-serif font-bold text-white mb-4">
             Contáctanos
           </h2>
-          <div className="w-20 h-1 gradient-primary mx-auto rounded-full"></div>
+          <div className="w-20 h-1 bg-gradient-to-r from-gold to-gold-dark mx-auto rounded-full mb-4"></div>
+          <p className="text-gold-light text-lg max-w-2xl mx-auto">
+            Estamos listos para hacer realidad tu proyecto. Compártenos tus ideas y te ayudaremos a crear el espacio perfecto.
+          </p>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-5 gap-8">
           {/* Información de Contacto */}
           <div className="lg:col-span-2 space-y-6">
-            <h3 className="text-2xl font-serif font-bold text-gray-900 mb-6">
+            <h3 className="text-2xl font-serif font-bold text-white mb-6">
               Información de Contacto
             </h3>
             {contactInfo.map((info, index) => (
-              <div key={index} className="flex gap-4">
-                <div className="flex-shrink-0 gradient-text">
+              <div key={index} className="flex gap-4 p-4 rounded-xl bg-white/10 backdrop-blur-sm border-2 border-gold/30 hover:border-gold transition-all duration-300 hover:scale-105">
+                <div className="flex-shrink-0 text-gold">
                   {info.icon}
                 </div>
                 <div>
-                  <h4 className="font-semibold text-gray-900 mb-1">{info.title}</h4>
-                  <p className="text-gray-600 whitespace-pre-line">{info.content}</p>
+                  <h4 className="font-semibold text-white mb-1">{info.title}</h4>
+                  <p className="text-gold-light whitespace-pre-line">{info.content}</p>
                 </div>
               </div>
             ))}
@@ -84,7 +94,7 @@ const Contacto = () => {
 
           {/* Formulario */}
           <div className="lg:col-span-3">
-            <form onSubmit={handleSubmit} className="bg-white rounded-2xl p-8 shadow-lg">
+            <form onSubmit={handleSubmit} className="bg-white/10 backdrop-blur-sm rounded-2xl p-8 shadow-2xl border-2 border-gold/30 hover:border-gold transition-all duration-300">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
                 <div>
                   <input
@@ -94,7 +104,7 @@ const Contacto = () => {
                     onChange={handleChange}
                     placeholder="Nombre completo"
                     required
-                    className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-primary focus:outline-none transition-colors"
+                    className="w-full px-4 py-3 bg-white/10 border-2 border-gold/30 rounded-lg focus:border-gold focus:outline-none transition-colors text-white placeholder-gold-light/60"
                   />
                 </div>
                 <div>
@@ -105,7 +115,7 @@ const Contacto = () => {
                     onChange={handleChange}
                     placeholder="Email"
                     required
-                    className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-primary focus:outline-none transition-colors"
+                    className="w-full px-4 py-3 bg-white/10 border-2 border-gold/30 rounded-lg focus:border-gold focus:outline-none transition-colors text-white placeholder-gold-light/60"
                   />
                 </div>
               </div>
@@ -118,7 +128,7 @@ const Contacto = () => {
                     value={formData.telefono}
                     onChange={handleChange}
                     placeholder="Teléfono"
-                    className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-primary focus:outline-none transition-colors"
+                    className="w-full px-4 py-3 bg-white/10 border-2 border-gold/30 rounded-lg focus:border-gold focus:outline-none transition-colors text-white placeholder-gold-light/60"
                   />
                 </div>
                 <div>
@@ -127,7 +137,7 @@ const Contacto = () => {
                     value={formData.interes}
                     onChange={handleChange}
                     required
-                    className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-primary focus:outline-none transition-colors"
+                    className="w-full px-4 py-3 bg-white/10 border-2 border-gold/30 rounded-lg focus:border-gold focus:outline-none transition-colors text-white"
                   >
                     <option value="">Selecciona un producto</option>
                     <option value="tina-madera">Tina de Madera Artesanal</option>
@@ -147,13 +157,13 @@ const Contacto = () => {
                   placeholder="Cuéntanos sobre tu proyecto..."
                   required
                   rows="5"
-                  className="w-full px-4 py-3 border-2 border-gray-200 rounded-lg focus:border-primary focus:outline-none transition-colors resize-none"
+                  className="w-full px-4 py-3 bg-white/10 border-2 border-gold/30 rounded-lg focus:border-gold focus:outline-none transition-colors resize-none text-white placeholder-gold-light/60"
                 ></textarea>
               </div>
 
               <button
                 type="submit"
-                className="w-full px-8 py-4 gradient-primary text-white font-semibold rounded-full hover:shadow-xl hover:-translate-y-1 transition-all duration-300"
+                className="w-full px-8 py-4 bg-gradient-to-r from-gold to-gold-dark text-slate-900 font-bold rounded-full hover:scale-105 transition-transform duration-300 shadow-lg shadow-gold/50"
               >
                 Enviar Mensaje
               </button>

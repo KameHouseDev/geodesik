@@ -1,3 +1,6 @@
+import proyectoImage from '../assets/images/proyecto_14.WebP';
+import tinaMatanzaImage from '../assets/images/tina_matanza.jpg';
+
 const Hero = () => {
   // Elementos decorativos X en el lado izquierdo
   const xMarks = [
@@ -22,32 +25,42 @@ const Hero = () => {
 
   return (
     <section id="inicio" className="relative h-screen flex items-center justify-center overflow-hidden bg-gradient-to-br from-slate-800 via-slate-700 to-slate-800">
-      {/* Imagen de sauna izquierda */}
-      <div className="absolute left-0 top-1/2 -translate-y-1/2 w-[35%] h-[70vh] opacity-95 z-10">
+      {/* Imagen de fondo para mobile */}
+      <div className="absolute inset-0 md:hidden z-0">
+        <img 
+          src={proyectoImage} 
+          alt="Proyecto Geodesik"
+          className="w-full h-full object-cover opacity-40"
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-slate-800/80 via-slate-800/60 to-slate-800/80"></div>
+      </div>
+
+      {/* Imagen de sauna izquierda - solo desktop */}
+      <div className="hidden md:block absolute left-0 top-1/2 -translate-y-1/2 w-[35%] h-[70vh] opacity-95 z-10">
         <div className="relative w-full h-full">
           <div className="absolute inset-y-0 right-0 w-1/3 bg-gradient-to-l from-slate-800 to-transparent z-10"></div>
           <img 
-            src="https://images.unsplash.com/photo-1600334129128-685c5582fd35?w=800&q=80" 
-            alt="Sauna de madera"
+            src={proyectoImage} 
+            alt="Proyecto 14"
             className="w-full h-full object-cover rounded-r-3xl shadow-2xl"
           />
         </div>
       </div>
 
-      {/* Imagen de tina derecha */}
-      <div className="absolute right-0 top-1/2 -translate-y-1/2 w-[35%] h-[70vh] opacity-95 z-10">
+      {/* Imagen de tina derecha - solo desktop */}
+      <div className="hidden md:block absolute right-0 top-1/2 -translate-y-1/2 w-[35%] h-[70vh] opacity-95 z-10">
         <div className="relative w-full h-full">
           <div className="absolute inset-y-0 left-0 w-1/3 bg-gradient-to-r from-slate-800 to-transparent z-10"></div>
           <img 
-            src="https://images.unsplash.com/photo-1544161515-4ab6ce6db874?w=800&q=80" 
-            alt="Tina de madera"
+            src={tinaMatanzaImage} 
+            alt="Tina Matanza"
             className="w-full h-full object-cover rounded-l-3xl shadow-2xl"
           />
         </div>
       </div>
 
-      {/* Marcas X decorativas */}
-      <div className="absolute left-[32%] top-0 h-full flex flex-col justify-center gap-8 z-20">
+      {/* Marcas X decorativas - solo desktop */}
+      <div className="hidden lg:flex absolute left-[32%] top-0 h-full flex-col justify-center gap-8 z-20">
         {xMarks.map((mark, index) => (
           <div 
             key={index} 
@@ -59,11 +72,11 @@ const Hero = () => {
         ))}
       </div>
 
-      {/* Elementos geométricos cuadrados */}
+      {/* Elementos geométricos cuadrados - solo desktop */}
       {decorativeSquares.map((square, index) => (
         <div
           key={index}
-          className="absolute border-2 border-gold/40 rounded-lg animate-float z-20"
+          className="hidden lg:block absolute border-2 border-gold/40 rounded-lg animate-float z-20"
           style={{
             width: `${square.size}px`,
             height: `${square.size}px`,
@@ -85,38 +98,36 @@ const Hero = () => {
       </div>
 
       {/* Contenido central */}
-      <div className="relative z-30 text-center px-4 max-w-5xl mx-auto">
-        <p className="text-gray-300 text-xs md:text-sm tracking-[0.4em] uppercase mb-4 animate-fade-in">
+      <div className="relative z-30 text-center px-6 md:px-4 max-w-5xl mx-auto">
+        <p className="text-gray-300 text-[0.6rem] sm:text-xs md:text-sm tracking-[0.3em] md:tracking-[0.4em] uppercase mb-3 md:mb-4 animate-fade-in">
           TINAS DE MADERA
         </p>
         
-        <h1 className="text-7xl md:text-8xl lg:text-9xl font-serif font-bold text-gold mb-6 animate-fade-in-up tracking-wider">
+        <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl font-serif font-bold text-gold mb-4 md:mb-6 animate-fade-in-up tracking-wide md:tracking-wider leading-tight">
           GEODESIK
         </h1>
         
-        <div className="flex items-center justify-center gap-8 mb-12">
-          <div className="hidden md:block w-24 h-[2px] bg-gradient-to-r from-transparent via-gold to-transparent"></div>
-          <p className="text-gray-200 text-xl md:text-2xl tracking-[0.3em] uppercase animate-fade-in animation-delay-200">
+        <div className="flex items-center justify-center gap-4 md:gap-8 mb-8 md:mb-12">
+          <div className="hidden md:block w-16 md:w-24 h-[2px] bg-gradient-to-r from-transparent via-gold to-transparent"></div>
+          <p className="text-gray-200 text-lg sm:text-xl md:text-2xl tracking-[0.2em] md:tracking-[0.3em] uppercase animate-fade-in animation-delay-200">
             SAUNAS
           </p>
-          <div className="hidden md:block w-24 h-[2px] bg-gradient-to-l from-transparent via-gold to-transparent"></div>
+          <div className="hidden md:block w-16 md:w-24 h-[2px] bg-gradient-to-l from-transparent via-gold to-transparent"></div>
         </div>
 
-        <p className="text-gray-300 text-base md:text-lg max-w-2xl mx-auto mb-10 animate-fade-in animation-delay-400">
+        <p className="text-gray-300 text-sm sm:text-base md:text-lg max-w-2xl mx-auto mb-8 md:mb-10 animate-fade-in animation-delay-400 px-4">
           Fabricación artesanal de tinas y saunas de madera premium
         </p>
 
-        <div className="flex flex-col sm:flex-row gap-4 justify-center animate-fade-in animation-delay-600">
+        <div className="flex flex-col sm:flex-row gap-3 md:gap-4 justify-center animate-fade-in animation-delay-600 px-4">
           <a
             href="#productos"
-            className="px-10 py-4 bg-transparent border-2 border-gray-800 text-gray-800 bg-white/90 font-semibold hover:bg-gold hover:border-gold hover:text-navy transition-all duration-300 uppercase tracking-wider text-sm"
-          >
+            className="px-8 md:px-10 py-3 md:py-4 bg-transparent border-2 border-gray-800 text-gray-800 bg-white/90 font-semibold hover:bg-gold hover:border-gold hover:text-navy transition-all duration-300 uppercase tracking-wider text-xs md:text-sm rounded-md md:rounded-none">
             VER PRODUCTOS
           </a>
           <a
             href="#contacto"
-            className="px-10 py-4 border-2 border-gray-800 bg-white/90 text-gray-800 font-semibold hover:bg-gold hover:border-gold hover:text-navy transition-all duration-300 uppercase tracking-wider text-sm"
-          >
+            className="px-8 md:px-10 py-3 md:py-4 border-2 border-gray-800 bg-white/90 text-gray-800 font-semibold hover:bg-gold hover:border-gold hover:text-navy transition-all duration-300 uppercase tracking-wider text-xs md:text-sm rounded-md md:rounded-none">
             CONTÁCTANOS
           </a>
         </div>
