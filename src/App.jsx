@@ -8,6 +8,7 @@ import Galeria from './components/Galeria'
 import Nosotros from './components/Nosotros'
 import Contacto from './components/Contacto'
 import Footer from './components/Footer'
+import FloatingButtons from './components/FloatingButtons'
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
       <Nosotros />
       <Contacto />
       <Footer />
+      <FloatingButtons />
     </div>
   )
 }

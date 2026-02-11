@@ -103,10 +103,10 @@ const Nosotros = () => {
           <div className="relative flex items-center justify-center order-1 lg:order-2">
             {/* Cuadro decorativo de fondo */}
             <div className="absolute inset-0 flex items-center justify-center">
-              <div className="w-[420px] h-[420px] border-2 border-gold/30 rounded-2xl rotate-6"></div>
+              <div className="w-[420px] h-[420px] border-2 border-gold/30 rounded-2xl animate-glow-float"></div>
             </div>
             <div className="absolute inset-0 flex items-center justify-center">
-              <div className="w-[400px] h-[400px] border-2 border-gold/50 rounded-2xl -rotate-6"></div>
+              <div className="w-[400px] h-[400px] border-2 border-gold/50 rounded-2xl animate-glow-float-reverse"></div>
             </div>
             
             {/* Contenedor del logo */}

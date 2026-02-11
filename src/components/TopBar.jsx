@@ -2,7 +2,7 @@ import { FaFacebook, FaInstagram } from 'react-icons/fa'
 
 const TopBar = () => {
   return (
-    <div className="bg-navy-dark text-white py-2 text-sm">
+    <div className="bg-navy-dark text-white py-5 text-sm">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex flex-wrap justify-between items-center gap-4">
           <div className="flex items-center gap-6">
