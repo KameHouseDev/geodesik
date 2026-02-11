@@ -1,6 +1,6 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
 
 @layer base {
   html {
@@ -8,16 +8,129 @@
   }
   
   body {
-    @apply font-sans text-gray-800;
+    font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif;
+    color: #000000; /* Darkest text color */
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.9); /* Made the shadow more noticeable */
   }
 }
 
 @layer utilities {
   .gradient-primary {
-    @apply bg-gradient-to-r from-primary to-primary-dark;
+    background-image: linear-gradient(to right, var(--primary), var(--primary-dark));
   }
   
   .gradient-text {
-    @apply bg-gradient-to-r from-primary to-primary-dark bg-clip-text text-transparent;
+    background-image: linear-gradient(to right, #2563eb, #1e40af);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  .text-gray-600 {
+    color: #555555; /* Cambiar el color del texto a un gris más oscuro */
+  }
+
+  @keyframes slower-pulse {
+    0%, 100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.5;
+    }
+  }
+
+  .animate-slower-pulse {
+    animation: slower-pulse 5s infinite;
+  }
+
+  @keyframes glow-float {
+    0% {
+      box-shadow: 0 0 8px rgba(212, 165, 116, 0.3), 0 0 15px rgba(212, 165, 116, 0.15);
+      transform: translateY(0px) rotate(6deg);
+      opacity: 0.8;
+    }
+    25% {
+      box-shadow: 0 0 12px rgba(212, 165, 116, 0.5), 0 0 20px rgba(212, 165, 116, 0.25);
+      transform: translateY(3px) rotate(7deg);
+      opacity: 1;
+    }
+    50% {
+      box-shadow: 0 0 15px rgba(212, 165, 116, 0.6), 0 0 25px rgba(212, 165, 116, 0.3);
+      transform: translateY(6px) rotate(6deg);
+      opacity: 0.9;
+    }
+    75% {
+      box-shadow: 0 0 12px rgba(212, 165, 116, 0.5), 0 0 20px rgba(212, 165, 116, 0.25);
+      transform: translateY(3px) rotate(5deg);
+      opacity: 1;
+    }
+    100% {
+      box-shadow: 0 0 8px rgba(212, 165, 116, 0.3), 0 0 15px rgba(212, 165, 116, 0.15);
+      transform: translateY(0px) rotate(6deg);
+      opacity: 0.8;
+    }
+  }
+
+  @keyframes glow-float-reverse {
+    0% {
+      box-shadow: 0 0 10px rgba(212, 165, 116, 0.35), 0 0 18px rgba(212, 165, 116, 0.18);
+      transform: translateY(0px) rotate(-6deg);
+      opacity: 0.85;
+    }
+    30% {
+      box-shadow: 0 0 14px rgba(212, 165, 116, 0.55), 0 0 22px rgba(212, 165, 116, 0.28);
+      transform: translateY(4px) rotate(-7deg);
+      opacity: 1;
+    }
+    60% {
+      box-shadow: 0 0 16px rgba(212, 165, 116, 0.65), 0 0 28px rgba(212, 165, 116, 0.35);
+      transform: translateY(7px) rotate(-6deg);
+      opacity: 0.95;
+    }
+    80% {
+      box-shadow: 0 0 14px rgba(212, 165, 116, 0.55), 0 0 22px rgba(212, 165, 116, 0.28);
+      transform: translateY(4px) rotate(-5deg);
+      opacity: 1;
+    }
+    100% {
+      box-shadow: 0 0 10px rgba(212, 165, 116, 0.35), 0 0 18px rgba(212, 165, 116, 0.18);
+      transform: translateY(0px) rotate(-6deg);
+      opacity: 0.85;
+    }
+  }
+
+  .animate-glow-float {
+    animation: glow-float 4.5s ease-in-out infinite;
+  }
+
+  .animate-glow-float-reverse {
+    animation: glow-float-reverse 5s ease-in-out infinite 0.5s;
+  }
+
+  .logo-container {
+    position: relative;
+    display: inline-block;
+    padding: 0; /* Eliminado el espacio alrededor del logo */
+    box-shadow: 70px 70px 70px 20px rgba(0, 0, 0, 1); /* Sombra uniforme en todos los bordes */
+    border-radius: 0; /* Eliminado el borde redondeado */
+  }
+
+  .card-gradient {
+    background-image: linear-gradient(to right, var(--primary), var(--primary-dark));
+    color: white; /* Texto blanco para contraste */
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  }
+
+  .card-gradient h3 {
+    background-image: linear-gradient(to right, var(--primary-light), var(--primary-dark));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  .card-gradient p {
+    color: white;
   }
 }
