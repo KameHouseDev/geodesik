@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { FaWhatsapp, FaInstagram, FaPlus, FaTimes } from 'react-icons/fa'
+import { FaWhatsapp, FaInstagram, FaComment, FaTimes } from 'react-icons/fa'
 
 const FloatingButtons = () => {
   const [isOpen, setIsOpen] = useState(false)
@@ -49,7 +49,7 @@ const FloatingButtons = () => {
         {isOpen ? (
           <FaTimes size={28} className="text-gold" />
         ) : (
-          <FaPlus size={28} className="text-navy-dark" />
+          <FaComment size={28} className="text-navy-dark" />
         )}
       </button>
     </div>
