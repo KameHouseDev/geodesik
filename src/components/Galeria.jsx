@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 // Import all local images
 import proyecto1 from '../assets/images/proyecto_1.WebP';
@@ -26,6 +26,8 @@ import tinaMaiten from '../assets/images/tina_maiten.jpg';
 
 const Galeria = () => {
   const [filter, setFilter] = useState('all');
+  const [lightboxOpen, setLightboxOpen] = useState(false);
+  const [selectedImageIndex, setSelectedImageIndex] = useState(0);
 
   const images = [
     { src: proyecto1, category: 'proyecto', title: 'Proyecto 1' },
@@ -53,6 +55,40 @@ const Galeria = () => {
   ];
 
   const filteredImages = filter === 'all' ? images : images.filter(image => image.category === filter);
+
+  const openLightbox = (index) => {
+    setSelectedImageIndex(index);
+    setLightboxOpen(true);
+  };
+
+  const closeLightbox = () => {
+    setLightboxOpen(false);
+  };
+
+  const nextImage = () => {
+    setSelectedImageIndex((prevIndex) => 
+      prevIndex === filteredImages.length - 1 ? 0 : prevIndex + 1
+    );
+  };
+
+  const prevImage = () => {
+    setSelectedImageIndex((prevIndex) => 
+      prevIndex === 0 ? filteredImages.length - 1 : prevIndex - 1
+    );
+  };
+
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (!lightboxOpen) return;
+      
+      if (e.key === 'Escape') closeLightbox();
+      if (e.key === 'ArrowRight') nextImage();
+      if (e.key === 'ArrowLeft') prevImage();
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [lightboxOpen, filteredImages.length]);
 
   return (
     <section id="galeria" className="py-20 bg-gradient-to-br from-slate-800 via-slate-700 to-slate-800 relative overflow-hidden">
@@ -110,6 +146,7 @@ const Galeria = () => {
           {filteredImages.map((image, index) => (
             <div
               key={index}
+              onClick={() => openLightbox(index)}
               className="relative h-80 rounded-2xl overflow-hidden group cursor-pointer border-2 border-gold/30 hover:border-gold transition-all duration-300 shadow-xl hover:shadow-2xl hover:shadow-gold/50"
             >
               <img
@@ -137,6 +174,75 @@ const Galeria = () => {
           ))}
         </div>
       </div>
+
+      {/* Lightbox Modal */}
+      {lightboxOpen && (
+        <div 
+          className="fixed inset-0 z-[100] bg-black/95 flex items-center justify-center p-4"
+          onClick={closeLightbox}
+        >
+          {/* Botón Cerrar */}
+          <button
+            onClick={closeLightbox}
+            className="absolute top-4 right-4 text-white hover:text-gold transition-colors z-[110] bg-navy-dark/80 backdrop-blur-sm rounded-full p-3 hover:scale-110 transition-transform duration-300"
+          >
+            <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </button>
+
+          {/* Flecha Izquierda */}
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              prevImage();
+            }}
+            className="absolute left-4 text-white hover:text-gold transition-colors z-[110] bg-navy-dark/80 backdrop-blur-sm rounded-full p-3 hover:scale-110 transition-transform duration-300"
+          >
+            <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+            </svg>
+          </button>
+
+          {/* Imagen */}
+          <div 
+            className="max-w-7xl max-h-[90vh] relative"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <img
+              src={filteredImages[selectedImageIndex]?.src}
+              alt={filteredImages[selectedImageIndex]?.title}
+              className="max-w-full max-h-[90vh] object-contain rounded-lg shadow-2xl"
+            />
+            {/* Título de la imagen */}
+            <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-6 rounded-b-lg">
+              <h3 className="text-white text-2xl font-bold mb-2">{filteredImages[selectedImageIndex]?.title}</h3>
+              <span className="inline-block px-3 py-1 bg-gradient-to-r from-gold to-gold-dark text-slate-900 rounded-full text-sm font-semibold">
+                {filteredImages[selectedImageIndex]?.category === 'tinaja' ? 'Tinaja' : 
+                 filteredImages[selectedImageIndex]?.category === 'sauna' ? 'Sauna' : 'Proyecto'}
+              </span>
+            </div>
+          </div>
+
+          {/* Flecha Derecha */}
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              nextImage();
+            }}
+            className="absolute right-4 text-white hover:text-gold transition-colors z-[110] bg-navy-dark/80 backdrop-blur-sm rounded-full p-3 hover:scale-110 transition-transform duration-300"
+          >
+            <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+            </svg>
+          </button>
+
+          {/* Contador de imágenes */}
+          <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 bg-navy-dark/80 backdrop-blur-sm text-white px-4 py-2 rounded-full text-sm font-semibold">
+            {selectedImageIndex + 1} / {filteredImages.length}
+          </div>
+        </div>
+      )}
     </section>
   );
 };
