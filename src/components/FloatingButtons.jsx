@@ -1,8 +1,16 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { FaWhatsapp, FaInstagram, FaComment, FaTimes } from 'react-icons/fa'
 
 const FloatingButtons = () => {
   const [isOpen, setIsOpen] = useState(false)
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsOpen(true)
+    }, 15000)
+
+    return () => clearTimeout(timer)
+  }, [])
 
   const toggleButtons = () => {
     setIsOpen(!isOpen)
@@ -16,7 +24,7 @@ const FloatingButtons = () => {
       }`}>
         {/* Botón de WhatsApp */}
         <a
-          href="https://wa.me/+56912345678"
+          href="https://wa.me/+56939036058"
           target="_blank"
           rel="noopener noreferrer"
           className="flex items-center gap-3 px-5 py-3 bg-green-500 hover:bg-green-600 text-white rounded-full shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300"
@@ -27,7 +35,7 @@ const FloatingButtons = () => {
 
         {/* Botón de Instagram */}
         <a
-          href="https://instagram.com/geodesik"
+          href="https://www.instagram.com/geodesikspa?igsh=YXlrM212Y2MyaWtj"
           target="_blank"
           rel="noopener noreferrer"
           className="flex items-center gap-3 px-5 py-3 bg-gradient-to-br from-purple-600 via-pink-600 to-orange-500 hover:from-purple-700 hover:via-pink-700 hover:to-orange-600 text-white rounded-full shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300"

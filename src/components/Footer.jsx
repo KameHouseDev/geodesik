@@ -94,6 +94,9 @@ const Footer = () => {
           <p className="text-center text-gold-light">
             &copy; 2026 Geodesik. Todos los derechos reservados.
           </p>
+          <p className="text-center text-gold-light mt-2">
+            Sitio web diseñado por <a href="https://www.kamehousedev.cl" className="text-gold hover:underline" target="_blank" rel="noopener noreferrer">KameHouseDev!</a>
+          </p>
         </div>
       </div>
     </footer>

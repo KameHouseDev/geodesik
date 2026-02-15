@@ -81,7 +81,7 @@ const Nosotros = () => {
               </p>
               <p className="flex items-start">
                 <span className="text-gold mr-3 mt-1">✓</span>
-                <span>Trabajamos únicamente con <span className="text-white font-semibold">maderas nobles seleccionadas</span>: ciprés, oregón, cedro, etc. Cada pieza es tratada y ensamblada por maestros carpinteros especializados.</span>
+                <span>Trabajamos únicamente con <span className="text-white font-semibold">maderas nobles seleccionadas</span>: ciprés, oregón, roble, etc. Cada pieza es tratada y ensamblada por maestros carpinteros especializados.</span>
               </p>
               <p className="flex items-start">
                 <span className="text-gold mr-3 mt-1">✓</span>

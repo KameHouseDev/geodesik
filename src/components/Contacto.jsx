@@ -34,22 +34,22 @@ const Contacto = () => {
     {
       icon: <FaMapMarkerAlt className="text-2xl" />,
       title: 'Dirección',
-      content: 'Av. Principal 1234\nCiudad, País',
+      content: 'Osorno 0561\nLa Granja, Santiago, Chile',
     },
     {
       icon: <FaPhone className="text-2xl" />,
       title: 'Teléfono',
-      content: '+1 (555) 123-4567',
+      content: '+56 9 39036058',
     },
     {
       icon: <FaEnvelope className="text-2xl" />,
       title: 'Email',
-      content: 'info@geodesik.com',
+      content: 'ventas@geodesik.cl',
     },
     {
       icon: <FaClock className="text-2xl" />,
       title: 'Horario',
-      content: 'Lun - Vie: 9:00 AM - 6:00 PM\nSáb: 10:00 AM - 2:00 PM',
+      content: 'Lun - Sab: 9:00 AM - 6:00 PM\nDom: Cerrado',
     },
   ]
 
@@ -137,14 +137,15 @@ const Contacto = () => {
                     value={formData.interes}
                     onChange={handleChange}
                     required
-                    className="w-full px-4 py-3 bg-white/10 border-2 border-gold/30 rounded-lg focus:border-gold focus:outline-none transition-colors text-white"
+                    className="w-full px-4 py-3 bg-white/10 border-2 border-gold/30 rounded-lg focus:border-gold focus:outline-none transition-colors text-white placeholder-gold-light/60"
+                    style={{ colorScheme: 'dark' }}
                   >
-                    <option value="">Selecciona un producto</option>
-                    <option value="tina-madera">Tina de Madera Artesanal</option>
-                    <option value="sauna-finlandes">Sauna Finlandés de Madera</option>
-                    <option value="sauna-seco">Sauna Seco Artesanal</option>
-                    <option value="tina-exterior">Tina Exterior de Madera</option>
-                    <option value="personalizado">Diseño Personalizado</option>
+                    <option value="" className="bg-slate-800 text-white">Selecciona un producto</option>
+                    <option value="tina-madera" className="bg-slate-800 text-white">Tina de Madera Artesanal</option>
+                    <option value="sauna-finlandes" className="bg-slate-800 text-white">Sauna Finlandés de Madera</option>
+                    <option value="sauna-seco" className="bg-slate-800 text-white">Sauna Seco Artesanal</option>
+                    <option value="tina-exterior" className="bg-slate-800 text-white">Tina Exterior de Madera</option>
+                    <option value="personalizado" className="bg-slate-800 text-white">Diseño Personalizado</option>
                   </select>
                 </div>
               </div>
