@@ -41,6 +41,8 @@ jobs:
           ssh -o StrictHostKeyChecking=no -i private_key.pem admin@$LIGHTSAIL_IP "
             sudo chown -R www-data:www-data /var/www/html &&
             sudo chmod -R 755 /var/www/html &&
+            sudo pm2 stop all || true &&
+            sudo systemctl stop pm2-root || true &&
             sudo fuser -k 80/tcp || true &&
             sudo pkill -9 nginx || true &&
             sudo rm -f /var/run/nginx.pid || true &&
