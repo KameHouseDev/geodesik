@@ -1,5 +1,4 @@
 name: Deploy to Amazon Lightsail
-
 on:
   push:
     branches:
@@ -21,28 +20,62 @@ jobs:
           node-version: '18'
 
       # 3. Install dependencies
-      - name: Install dependencies
+      - name: Install frontend dependencies
         run: npm install
 
       # 4. Build the application
-      - name: Build the application
+      - name: Build the frontend application
         run: npm run build
 
-      # 5. Deploy to Amazon Lightsail
+      # 5. Install backend dependencies
+      - name: Install backend dependencies
+        working-directory: ./backend
+        run: npm install --production
+
+      # 6. Deploy to Amazon Lightsail
       - name: Deploy to Lightsail
         env:
           SSH_PRIVATE_KEY: ${{ secrets.LIGHTSAIL_SSH_KEY }}
           LIGHTSAIL_IP: ${{ secrets.LIGHTSAIL_IP }}
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          SES_FROM_EMAIL: ${{ secrets.SES_FROM_EMAIL }}
+          SES_TO_EMAIL: ${{ secrets.SES_TO_EMAIL }}
         run: |
           echo "$SSH_PRIVATE_KEY" > private_key.pem
           chmod 600 private_key.pem
+          
+          # Deploy Frontend
           ssh -o StrictHostKeyChecking=no -i private_key.pem admin@$LIGHTSAIL_IP "sudo mkdir -p /var/www/html && sudo chown -R admin:admin /var/www/html && sudo rm -rf /var/www/html/*"
           scp -o StrictHostKeyChecking=no -i private_key.pem -r dist/* admin@$LIGHTSAIL_IP:/var/www/html/
+          ssh -o StrictHostKeyChecking=no -i private_key.pem admin@$LIGHTSAIL_IP "sudo chown -R www-data:www-data /var/www/html && sudo chmod -R 755 /var/www/html"
+          
+          # Deploy Backend
+          ssh -o StrictHostKeyChecking=no -i private_key.pem admin@$LIGHTSAIL_IP "sudo mkdir -p /var/www/backend && sudo chown -R admin:admin /var/www/backend"
+          scp -o StrictHostKeyChecking=no -i private_key.pem -r backend/* admin@$LIGHTSAIL_IP:/var/www/backend/
+          
+          # Create .env file for backend
+          ssh -o StrictHostKeyChecking=no -i private_key.pem admin@$LIGHTSAIL_IP "echo 'PORT=3001' > /var/www/backend/.env"
+          ssh -o StrictHostKeyChecking=no -i private_key.pem admin@$LIGHTSAIL_IP "echo 'AWS_REGION=us-east-1' >> /var/www/backend/.env"
+          ssh -o StrictHostKeyChecking=no -i private_key.pem admin@$LIGHTSAIL_IP "echo 'AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}' >> /var/www/backend/.env"
+          ssh -o StrictHostKeyChecking=no -i private_key.pem admin@$LIGHTSAIL_IP "echo 'AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}' >> /var/www/backend/.env"
+          ssh -o StrictHostKeyChecking=no -i private_key.pem admin@$LIGHTSAIL_IP "echo 'SES_FROM_EMAIL=${SES_FROM_EMAIL}' >> /var/www/backend/.env"
+          ssh -o StrictHostKeyChecking=no -i private_key.pem admin@$LIGHTSAIL_IP "echo 'SES_TO_EMAIL=${SES_TO_EMAIL}' >> /var/www/backend/.env"
+          ssh -o StrictHostKeyChecking=no -i private_key.pem admin@$LIGHTSAIL_IP "echo 'CORS_ORIGIN=https://geodesik.cl' >> /var/www/backend/.env"
+          
+          # Install PM2 if not installed and start/restart backend
           ssh -o StrictHostKeyChecking=no -i private_key.pem admin@$LIGHTSAIL_IP "
-            sudo chown -R www-data:www-data /var/www/html &&
-            sudo chmod -R 755 /var/www/html &&
-            sudo pm2 stop all || true &&
-            sudo systemctl stop pm2-root || true &&
+            sudo npm install -g pm2 || true &&
+            cd /var/www/backend &&
+            pm2 delete geodesik-backend || true &&
+            pm2 start server.js --name geodesik-backend &&
+            pm2 save &&
+            sudo pm2 startup systemd -u admin --hp /home/admin || true &&
+            pm2 list
+          "
+          
+          # Restart nginx
+          ssh -o StrictHostKeyChecking=no -i private_key.pem admin@$LIGHTSAIL_IP "
             sudo fuser -k 80/tcp || true &&
             sudo pkill -9 nginx || true &&
             sudo rm -f /var/run/nginx.pid || true &&

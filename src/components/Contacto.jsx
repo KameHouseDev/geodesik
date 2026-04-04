@@ -9,6 +9,8 @@ const Contacto = () => {
     interes: '',
     mensaje: '',
   })
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [submitStatus, setSubmitStatus] = useState(null)
 
   const handleChange = (e) => {
     setFormData({
@@ -17,17 +19,42 @@ const Contacto = () => {
     })
   }
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
-    // Aquí puedes agregar la lógica para enviar el formulario
-    alert('¡Gracias por tu mensaje! Nos pondremos en contacto contigo pronto.')
-    setFormData({
-      nombre: '',
-      email: '',
-      telefono: '',
-      interes: '',
-      mensaje: '',
-    })
+    setIsSubmitting(true)
+    setSubmitStatus(null)
+
+    try {
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      })
+
+      const data = await response.json()
+
+      if (data.success) {
+        setSubmitStatus({ type: 'success', message: data.message })
+        setFormData({
+          nombre: '',
+          email: '',
+          telefono: '',
+          interes: '',
+          mensaje: '',
+        })
+      } else {
+        setSubmitStatus({ type: 'error', message: data.message })
+      }
+    } catch (error) {
+      setSubmitStatus({
+        type: 'error',
+        message: 'Hubo un error al enviar tu mensaje. Por favor intenta nuevamente.',
+      })
+    } finally {
+      setIsSubmitting(false)
+    }
   }
 
   const contactInfo = [
@@ -162,11 +189,26 @@ const Contacto = () => {
                 ></textarea>
               </div>
 
+              {submitStatus && (
+                <div className={`mb-6 p-4 rounded-lg ${
+                  submitStatus.type === 'success' 
+                    ? 'bg-green-500/20 border-2 border-green-500 text-green-200' 
+                    : 'bg-red-500/20 border-2 border-red-500 text-red-200'
+                }`}>
+                  {submitStatus.message}
+                </div>
+              )}
+
               <button
                 type="submit"
-                className="w-full px-8 py-4 bg-gradient-to-r from-gold to-gold-dark text-slate-900 font-bold rounded-full hover:scale-105 transition-transform duration-300 shadow-lg shadow-gold/50"
+                disabled={isSubmitting}
+                className={`w-full px-8 py-4 bg-gradient-to-r from-gold to-gold-dark text-slate-900 font-bold rounded-full transition-all duration-300 shadow-lg shadow-gold/50 ${
+                  isSubmitting 
+                    ? 'opacity-50 cursor-not-allowed' 
+                    : 'hover:scale-105'
+                }`}
               >
-                Enviar Mensaje
+                {isSubmitting ? 'Enviando...' : 'Enviar Mensaje'}
               </button>
             </form>
           </div>
