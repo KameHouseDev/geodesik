@@ -39,6 +39,20 @@ app.get('/health', (req, res) => {
   res.json({ status: 'ok', service: 'Geodesik Contact API' });
 });
 
+// Endpoint de debug temporal
+app.get('/api/debug', (req, res) => {
+  res.json({
+    env: {
+      hasAccessKey: !!process.env.AWS_ACCESS_KEY_ID,
+      hasSecretKey: !!process.env.AWS_SECRET_ACCESS_KEY,
+      region: process.env.AWS_REGION,
+      fromEmail: process.env.SES_FROM_EMAIL,
+      toEmail: process.env.SES_TO_EMAIL,
+      corsOrigin: process.env.CORS_ORIGIN,
+    }
+  });
+});
+
 // Endpoint de contacto
 app.post('/api/contact', async (req, res) => {
   const { nombre, email, telefono, interes, mensaje } = req.body;
