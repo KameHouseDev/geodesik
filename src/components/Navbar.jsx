@@ -18,31 +18,32 @@ const Navbar = () => {
   const navItems = [
     { name: 'INICIO', href: '#inicio' },
     { name: 'NUESTROS PROYECTOS', href: '#galeria' },
+    { name: 'PRECIOS', href: '#precios' },
     { name: 'CONTACTO', href: '#contacto' },
   ]
 
   return (
-    <nav className={`fixed w-full z-50 transition-all duration-300 ${
+    <nav className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 ${
       scrolled ? 'bg-navy-dark/95 backdrop-blur-lg shadow-lg' : 'bg-navy-dark/80 backdrop-blur-md'
     }`}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-16">
+        <div className="flex justify-between items-center h-28">
           <div className="flex-shrink-0">
-            <div className="relative flex items-center justify-center py-4 mt-4">
+            <div className="relative flex items-center justify-center py-2">
               {/* Cuadros decorativos de fondo */}
               <div className="absolute inset-0 flex items-center justify-center">
-                <div className="w-[120px] h-[120px] border-2 border-gold/30 rounded-2xl animate-glow-float"></div>
+                <div className="w-[105px] h-[105px] border-2 border-gold/30 rounded-xl animate-glow-float"></div>
               </div>
               <div className="absolute inset-0 flex items-center justify-center">
-                <div className="w-[110px] h-[110px] border-2 border-gold/50 rounded-2xl animate-glow-float-reverse"></div>
+                <div className="w-[95px] h-[95px] border-2 border-gold/50 rounded-xl animate-glow-float-reverse"></div>
               </div>
               
               {/* Contenedor del logo */}
-              <div className="relative w-[100px] h-[100px] rounded-2xl bg-white/10 backdrop-blur-sm shadow-2xl shadow-gold/20 flex items-center justify-center border-2 border-gold hover:scale-105 transition-transform duration-500">
+              <div className="relative w-[85px] h-[85px] rounded-xl bg-white/10 backdrop-blur-sm shadow-2xl shadow-gold/20 flex items-center justify-center border-2 border-gold hover:scale-105 transition-transform duration-500">
                 <img 
                   src={logo} 
                   alt="Geodesik Logo" 
-                  className="h-20 w-auto drop-shadow-2xl rounded-3xl" 
+                  className="h-16 w-auto drop-shadow-2xl rounded-2xl" 
                 />
               </div>
             </div>
