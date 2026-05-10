@@ -1,6 +1,10 @@
 import React from 'react';
 import { FaWhatsapp } from 'react-icons/fa';
 import tinaMaiten from '../assets/images/tina_maiten.jpg';
+import tinaMatanza from '../assets/images/tina_matanza.jpg';
+import tinaja6 from '../assets/images/tinaja_6.WebP';
+import sauna1 from '../assets/images/sauna_1.WebP';
+import sauna3 from '../assets/images/sauna_3.WebP';
 import sauna5 from '../assets/images/sauna_5.WebP';
 
 const Precios = () => {
@@ -10,7 +14,7 @@ const Precios = () => {
       imagen: tinaMaiten,
       titulo: 'Tina para Terraza',
       capacidad: '2 personas',
-      madera: 'Leña / Gas / Eléctrica',
+      madera: 'Pino Insigne / Roble',
       calefaccion: 'Leña / Gas / Eléctrica',
       complementos: 'LED Interior, Hidromasaje, Cascada (opcional)',
       precio: '$800.000',
@@ -18,7 +22,7 @@ const Precios = () => {
     },
     {
       id: 2,
-      imagen: tinaMaiten,
+      imagen: tinaMatanza,
       titulo: 'Tina 4 Personas',
       capacidad: '4 personas',
       madera: 'Pino Insigne',
@@ -29,7 +33,7 @@ const Precios = () => {
     },
     {
       id: 3,
-      imagen: tinaMaiten,
+      imagen: tinaja6,
       titulo: 'Tina 6 Personas',
       capacidad: '6 personas',
       madera: 'Pino Insigne',
@@ -40,7 +44,7 @@ const Precios = () => {
     },
     {
       id: 4,
-      imagen: sauna5,
+      imagen: sauna1,
       titulo: 'Sauna 1.80 x 1.06 m.',
       capacidad: '2 personas',
       madera: 'Pino Insigne',
@@ -51,7 +55,7 @@ const Precios = () => {
     },
     {
       id: 5,
-      imagen: sauna5,
+      imagen: sauna3,
       titulo: 'Sauna 1.80 x 1.60 m.',
       capacidad: '4 personas',
       madera: 'Pino Insigne',
@@ -185,6 +189,47 @@ const Precios = () => {
           >
             Solicitar cotización personalizada
           </a>
+        </div>
+
+        {/* Medios de pago */}
+        <div className="mt-14 border-t border-gold/20 pt-10">
+          <p className="text-center text-gold-light text-sm font-semibold uppercase tracking-widest mb-6">
+            Medios de pago aceptados
+          </p>
+          <div className="flex flex-wrap justify-center items-center gap-4">
+            {/* Webpay */}
+            <div className="flex items-center gap-2 bg-white/10 border border-gold/20 rounded-xl px-5 py-3 hover:border-gold/50 transition-colors">
+              <span className="text-2xl">💳</span>
+              <div>
+                <p className="text-white font-bold text-sm leading-tight">Webpay</p>
+                <p className="text-gold-light text-xs">Débito y Crédito</p>
+              </div>
+            </div>
+            {/* Transferencia */}
+            <div className="flex items-center gap-2 bg-white/10 border border-gold/20 rounded-xl px-5 py-3 hover:border-gold/50 transition-colors">
+              <span className="text-2xl">🏦</span>
+              <div>
+                <p className="text-white font-bold text-sm leading-tight">Transferencia</p>
+                <p className="text-gold-light text-xs">Bancaria directa</p>
+              </div>
+            </div>
+            {/* Cuotas */}
+            <div className="flex items-center gap-2 bg-white/10 border border-gold/20 rounded-xl px-5 py-3 hover:border-gold/50 transition-colors">
+              <span className="text-2xl">📅</span>
+              <div>
+                <p className="text-white font-bold text-sm leading-tight">Cuotas sin interés</p>
+                <p className="text-gold-light text-xs">Hasta 12 cuotas</p>
+              </div>
+            </div>
+            {/* Efectivo */}
+            <div className="flex items-center gap-2 bg-white/10 border border-gold/20 rounded-xl px-5 py-3 hover:border-gold/50 transition-colors">
+              <span className="text-2xl">💵</span>
+              <div>
+                <p className="text-white font-bold text-sm leading-tight">Efectivo</p>
+                <p className="text-gold-light text-xs">Pago directo</p>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </section>

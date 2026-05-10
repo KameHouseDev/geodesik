@@ -9,6 +9,8 @@ import Testimonios from './components/Testimonios'
 import Nosotros from './components/Nosotros'
 import Galeria from './components/Galeria'
 import Precios from './components/Precios'
+import Configurador from './components/Configurador'
+import Calculadora from './components/Calculadora'
 import FAQ from './components/FAQ'
 import Contacto from './components/Contacto'
 import Footer from './components/Footer'
@@ -29,6 +31,8 @@ function App() {
       <Nosotros />
       <Galeria />
       <Precios />
+      <Configurador />
+      <Calculadora />
       <FAQ />
       <Contacto />
       <Footer />
