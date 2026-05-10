@@ -99,6 +99,12 @@ const Hero = () => {
 
       {/* Contenido central */}
       <div className="relative z-30 text-center px-6 md:px-4 max-w-5xl mx-auto">
+        {/* Badge de social proof */}
+        <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm border border-gold/50 rounded-full px-4 py-2 mb-5 md:mb-6 animate-fade-in">
+          <span className="text-gold text-sm">⭐⭐⭐⭐⭐</span>
+          <span className="text-gray-200 text-xs md:text-sm font-medium">+200 clientes satisfechos · 15 años de experiencia</span>
+        </div>
+
         <p className="text-gray-300 text-[0.6rem] sm:text-xs md:text-sm tracking-[0.3em] md:tracking-[0.4em] uppercase mb-3 md:mb-4 animate-fade-in">
           TINAS DE MADERA
         </p>
@@ -116,20 +122,28 @@ const Hero = () => {
         </div>
 
         <p className="text-gray-300 text-sm sm:text-base md:text-lg max-w-2xl mx-auto mb-8 md:mb-10 animate-fade-in animation-delay-400 px-4">
-          Fabricación artesanal de tinas y saunas de madera premium
+          Fabricación artesanal de tinas y saunas de madera premium. Entrega en todo Chile.
         </p>
 
         <div className="flex flex-col sm:flex-row gap-3 md:gap-4 justify-center animate-fade-in animation-delay-600 px-4">
           <a
-            href="#productos"
-            className="px-8 md:px-10 py-3 md:py-4 bg-transparent border-2 border-gray-800 text-gray-800 bg-white/90 font-semibold hover:bg-gold hover:border-gold hover:text-navy transition-all duration-300 uppercase tracking-wider text-xs md:text-sm rounded-md md:rounded-none">
-            VER PRODUCTOS
+            href="#precios"
+            className="px-8 md:px-10 py-3 md:py-4 bg-gold border-2 border-gold text-slate-900 font-bold hover:bg-yellow-400 hover:border-yellow-400 transition-all duration-300 uppercase tracking-wider text-xs md:text-sm rounded-md md:rounded-none shadow-lg shadow-gold/30">
+            VER PRECIOS
           </a>
           <a
             href="#contacto"
-            className="px-8 md:px-10 py-3 md:py-4 border-2 border-gray-800 bg-white/90 text-gray-800 font-semibold hover:bg-gold hover:border-gold hover:text-navy transition-all duration-300 uppercase tracking-wider text-xs md:text-sm rounded-md md:rounded-none">
-            CONTÁCTANOS
+            className="px-8 md:px-10 py-3 md:py-4 border-2 border-white/80 bg-white/10 backdrop-blur-sm text-white font-semibold hover:bg-white hover:text-slate-900 transition-all duration-300 uppercase tracking-wider text-xs md:text-sm rounded-md md:rounded-none">
+            COTIZACIÓN GRATIS
           </a>
+        </div>
+
+        {/* Trust indicators */}
+        <div className="flex flex-wrap justify-center gap-x-6 gap-y-1 mt-6 animate-fade-in animation-delay-600">
+          <span className="text-gray-400 text-xs flex items-center gap-1"><span className="text-green-400">✓</span> Sin costo</span>
+          <span className="text-gray-400 text-xs flex items-center gap-1"><span className="text-green-400">✓</span> Sin compromiso</span>
+          <span className="text-gray-400 text-xs flex items-center gap-1"><span className="text-green-400">✓</span> Respuesta en minutos</span>
+          <span className="text-gray-400 text-xs flex items-center gap-1"><span className="text-green-400">✓</span> Financiamiento disponible</span>
         </div>
       </div>
 

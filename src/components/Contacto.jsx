@@ -213,6 +213,27 @@ const Contacto = () => {
             </form>
           </div>
         </div>
+
+        {/* Mapa de ubicación */}
+        <div className="mt-12 rounded-2xl overflow-hidden border-2 border-gold/30 shadow-2xl">
+          <div className="bg-white/10 px-6 py-4 flex items-center gap-3">
+            <FaMapMarkerAlt className="text-gold text-xl" />
+            <div>
+              <p className="text-white font-semibold">Visítanos en nuestro taller</p>
+              <p className="text-gold-light text-sm">Osorno 0561, La Granja, Santiago, Chile</p>
+            </div>
+          </div>
+          <iframe
+            title="Ubicación Geodesik"
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3324.5!2d-70.6456!3d-33.5612!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x9662c3b0c0a0b0c1%3A0x0!2sOsorno+0561%2C+La+Granja%2C+Santiago!5e0!3m2!1ses!2scl!4v1"
+            width="100%"
+            height="320"
+            style={{ border: 0, display: 'block' }}
+            allowFullScreen=""
+            loading="lazy"
+            referrerPolicy="no-referrer-when-downgrade"
+          />
+        </div>
       </div>
     </section>
   )

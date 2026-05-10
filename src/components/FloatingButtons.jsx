@@ -7,7 +7,7 @@ const FloatingButtons = () => {
   useEffect(() => {
     const timer = setTimeout(() => {
       setIsOpen(true)
-    }, 15000)
+    }, 3000)
 
     return () => clearTimeout(timer)
   }, [])
@@ -45,21 +45,38 @@ const FloatingButtons = () => {
         </a>
       </div>
 
-      {/* Botón principal */}
+      {/* Botón principal con animación de pulso cuando está cerrado */}
       <button
         onClick={toggleButtons}
         className={`flex items-center justify-center w-16 h-16 rounded-full shadow-2xl transform hover:scale-110 transition-all duration-300 ${
           isOpen 
             ? 'bg-navy-dark hover:bg-navy border-2 border-gold rotate-45' 
-            : 'bg-gold hover:bg-gradient-to-br hover:from-gold hover:to-yellow-600 hover:shadow-gold/50'
+            : 'bg-green-500 hover:bg-green-600 animate-pulse-slow'
         }`}
       >
         {isOpen ? (
           <FaTimes size={28} className="text-gold" />
         ) : (
-          <FaComment size={28} className="text-navy-dark" />
+          <FaWhatsapp size={32} className="text-white" />
         )}
       </button>
+
+      {/* Etiqueta flotante cuando está cerrado */}
+      {!isOpen && (
+        <span className="mt-1 text-xs text-green-400 font-semibold bg-slate-900/80 px-2 py-0.5 rounded-full">
+          ¡Escríbenos!
+        </span>
+      )}
+
+      <style>{`
+        @keyframes pulse-slow {
+          0%, 100% { box-shadow: 0 0 0 0 rgba(34,197,94,0.5); }
+          50% { box-shadow: 0 0 0 12px rgba(34,197,94,0); }
+        }
+        .animate-pulse-slow {
+          animation: pulse-slow 2s ease-in-out infinite;
+        }
+      `}</style>
     </div>
   )
 }

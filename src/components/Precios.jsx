@@ -14,6 +14,7 @@ const Precios = () => {
       calefaccion: 'Leña / Gas / Eléctrica',
       complementos: 'LED Interior, Hidromasaje, Cascada (opcional)',
       precio: '$800.000',
+      popular: false,
     },
     {
       id: 2,
@@ -24,6 +25,7 @@ const Precios = () => {
       calefaccion: 'Leña / Gas / Eléctrica',
       complementos: 'LED Interior, Hidromasaje, Cascada (opcional)',
       precio: '$1.200.000',
+      popular: true,
     },
     {
       id: 3,
@@ -34,6 +36,7 @@ const Precios = () => {
       calefaccion: 'Leña / Gas / Eléctrica',
       complementos: 'LED Interior, Hidromasaje, Cascada (opcional)',
       precio: '$1.400.000',
+      popular: false,
     },
     {
       id: 4,
@@ -44,6 +47,7 @@ const Precios = () => {
       calefaccion: 'Eléctrica',
       complementos: 'Luz Interior, Valde, Cuchara, Piedras Volcánicas, Repisas',
       precio: '$1.300.000',
+      popular: false,
     },
     {
       id: 5,
@@ -54,6 +58,7 @@ const Precios = () => {
       calefaccion: 'Eléctrica',
       complementos: 'Luz Interior, Valde, Cuchara, Piedras Volcánicas, Repisas',
       precio: '$1.990.000',
+      popular: true,
     },
     {
       id: 6,
@@ -64,6 +69,7 @@ const Precios = () => {
       calefaccion: 'Eléctrica',
       complementos: 'Luz Interior, Valde, Cuchara, Piedras Volcánicas, Repisas',
       precio: '$2.490.000',
+      popular: false,
     },
   ];
 
@@ -88,19 +94,38 @@ const Precios = () => {
             Precios
           </h2>
           <div className="w-20 h-1 bg-gradient-to-r from-gold to-gold-dark mx-auto rounded-full mb-6"></div>
-          <p className="text-gold-light text-lg max-w-2xl mx-auto">
+          <p className="text-gold-light text-lg max-w-2xl mx-auto mb-6">
             Conoce nuestros precios de referencia. Cada proyecto es único y puede personalizarse según tus necesidades.
           </p>
+          {/* Urgencia de stock */}
+          <div className="inline-flex items-center gap-2 bg-red-500/10 border border-red-500/40 text-red-300 rounded-full px-5 py-2 text-sm font-semibold">
+            <span className="w-2 h-2 bg-red-400 rounded-full animate-pulse inline-block"></span>
+            Producción limitada este mes — quedan pocos cupos disponibles
+          </div>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {productos.map((producto) => (
             <div
               key={producto.id}
-              className="bg-white/10 backdrop-blur-sm rounded-2xl overflow-hidden shadow-xl hover:shadow-2xl hover:shadow-gold/50 transform hover:scale-105 transition-all duration-300 border-2 border-gold/30 hover:border-gold"
+              className={`relative bg-white/10 backdrop-blur-sm rounded-2xl overflow-hidden shadow-xl hover:shadow-2xl hover:shadow-gold/50 transform hover:scale-105 transition-all duration-300 border-2 ${producto.popular ? 'border-gold shadow-gold/30' : 'border-gold/30 hover:border-gold'}`}
             >
+              {/* Badge Más Popular */}
+              {producto.popular && (
+                <div className="absolute top-0 left-0 right-0 z-10 bg-gold text-slate-900 text-center text-xs font-bold py-1.5 tracking-widest uppercase">
+                  ⭐ Más Popular
+                </div>
+              )}
+
+              {/* Badge stock limitado en productos no populares */}
+              {!producto.popular && (
+                <div className="absolute top-3 right-3 z-10 bg-red-500/90 text-white text-[10px] font-bold px-2 py-1 rounded-full uppercase tracking-wide">
+                  Cupos limitados
+                </div>
+              )}
+
               {/* Imagen del producto */}
-              <div className="relative h-64 overflow-hidden">
+              <div className={`relative h-64 overflow-hidden ${producto.popular ? 'mt-7' : ''}`}>
                 <img
                   src={producto.imagen}
                   alt={producto.titulo}
@@ -130,8 +155,11 @@ const Precios = () => {
                 </div>
 
                 <div className="pt-4 border-t border-gold/30">
-                  <p className="text-2xl font-bold text-white mb-4">
+                  <p className="text-2xl font-bold text-white mb-1">
                     Desde: <span className="text-gold">{producto.precio}</span>
+                  </p>
+                  <p className="text-green-400 text-xs font-medium mb-4 flex items-center gap-1">
+                    <span>💳</span> Financiamiento disponible en cuotas
                   </p>
 
                   <button
@@ -148,9 +176,15 @@ const Precios = () => {
         </div>
 
         <div className="text-center mt-12">
-          <p className="text-gold-light text-sm">
+          <p className="text-gold-light text-sm mb-6">
             * Los precios son referenciales y pueden variar según personalizaciones y ubicación de instalación.
           </p>
+          <a
+            href="#contacto"
+            className="inline-block px-10 py-4 bg-gold hover:bg-yellow-400 text-slate-900 font-bold rounded-xl shadow-lg shadow-gold/30 transform hover:scale-105 transition-all duration-300 uppercase tracking-wider text-sm"
+          >
+            Solicitar cotización personalizada
+          </a>
         </div>
       </div>
     </section>
