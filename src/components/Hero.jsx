@@ -106,7 +106,7 @@ const Hero = () => {
         </div>
 
         <p className="text-gray-300 text-[0.6rem] sm:text-xs md:text-sm tracking-[0.3em] md:tracking-[0.4em] uppercase mb-3 md:mb-4 animate-fade-in">
-          TINAS DE MADERA
+          VENTA Y FABRICACIÓN DE TINAJAS Y SAUNAS DE MADERA
         </p>
         
         <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl xl:text-9xl font-serif font-bold text-gold mb-4 md:mb-6 animate-fade-in-up tracking-wide md:tracking-wider leading-tight">
@@ -122,7 +122,7 @@ const Hero = () => {
         </div>
 
         <p className="text-gray-300 text-sm sm:text-base md:text-lg max-w-2xl mx-auto mb-8 md:mb-10 animate-fade-in animation-delay-400 px-4">
-          Fabricación artesanal de tinas y saunas de madera premium. Entrega en todo Chile.
+          Venta y fabricación artesanal de tinajas y saunas de madera premium. Entrega a todo Chile.
         </p>
 
         <div className="flex flex-col sm:flex-row gap-3 md:gap-4 justify-center animate-fade-in animation-delay-600 px-4">

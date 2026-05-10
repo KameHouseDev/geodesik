@@ -4,8 +4,8 @@ const Productos = () => {
   const productos = [
     {
       icon: <FaHotTub className="text-6xl" />,
-      title: 'Tinas de Madera Artesanales',
-      description: 'Fabricadas con maderas nobles seleccionadas. Cada tina es una obra de arte única, construida a mano por nuestros maestros carpinteros.',
+      title: 'Venta de Tinajas de Madera Artesanales',
+      description: 'Fabricación y venta de tinajas de madera con maderas nobles seleccionadas. Cada tinaja es una obra de arte única, construida a mano por nuestros maestros carpinteros.',
       features: [
         'Madera de cedro o roble premium',
         'Ensamblaje artesanal tradicional',
@@ -15,8 +15,8 @@ const Productos = () => {
     },
     {
       icon: <FaSpa className="text-6xl" />,
-      title: 'Saunas Finlandeses de Madera',
-      description: 'Saunas tradicionales fabricados con técnicas milenarias. Utilizamos maderas aromáticas que potencian la experiencia térmica.',
+      title: 'Venta de Saunas Finlandeses de Madera',
+      description: 'Fabricación y venta de saunas finlandeses con técnicas milenarias. Utilizamos maderas aromáticas que potencian la experiencia térmica.',
       features: [
         'Madera de pino o abeto finlandés',
         'Construcción tradicional escandinava',

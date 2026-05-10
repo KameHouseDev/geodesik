@@ -3,13 +3,13 @@ import { FaTruck, FaShieldAlt, FaTools, FaStar, FaLeaf } from 'react-icons/fa'
 const items = [
   { icon: <FaTruck />, text: 'Envío a todo Chile' },
   { icon: <FaShieldAlt />, text: 'Garantía 1 año' },
-  { icon: <FaStar />, text: '15 años de experiencia' },
-  { icon: <FaTools />, text: 'Fabricación propia' },
+  { icon: <FaStar />, text: '15 años fabricando tinajas y saunas' },
+  { icon: <FaTools />, text: 'Fabricación y venta directa' },
   { icon: <FaLeaf />, text: 'Madera certificada' },
   { icon: <FaTruck />, text: 'Envío a todo Chile' },
   { icon: <FaShieldAlt />, text: 'Garantía 1 año' },
-  { icon: <FaStar />, text: '15 años de experiencia' },
-  { icon: <FaTools />, text: 'Fabricación propia' },
+  { icon: <FaStar />, text: '15 años fabricando tinajas y saunas' },
+  { icon: <FaTools />, text: 'Fabricación y venta directa' },
   { icon: <FaLeaf />, text: 'Madera certificada' },
 ]
 

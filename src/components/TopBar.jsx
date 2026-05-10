@@ -29,7 +29,7 @@ const TopBar = () => {
             </div>
 
             <div className="flex items-center gap-2">
-              <span className="text-gray-400 hidden md:inline mr-2">Tinajas y Saunas de madera</span>
+              <span className="text-gray-400 hidden md:inline mr-2">Venta y Fabricación de Tinajas y Saunas de Madera</span>
               <a href="https://www.instagram.com/geodesikspa?igsh=YXlrM212Y2MyaWtj" className="text-gray-300 hover:text-gold transition-colors" target="_blank" rel="noopener noreferrer">
                 <FaInstagram size={18} />
               </a>
