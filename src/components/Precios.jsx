@@ -163,7 +163,7 @@ const Precios = () => {
                     Desde: <span className="text-gold">{producto.precio}</span>
                   </p>
                   <p className="text-green-400 text-xs font-medium mb-4 flex items-center gap-1">
-                    <span>💳</span> Financiamiento disponible en cuotas
+                    <span>�</span> Cuotas disponibles vía MercadoLibre
                   </p>
 
                   <button
@@ -197,14 +197,6 @@ const Precios = () => {
             Medios de pago aceptados
           </p>
           <div className="flex flex-wrap justify-center items-center gap-4">
-            {/* Webpay */}
-            <div className="flex items-center gap-2 bg-white/10 border border-gold/20 rounded-xl px-5 py-3 hover:border-gold/50 transition-colors">
-              <span className="text-2xl">💳</span>
-              <div>
-                <p className="text-white font-bold text-sm leading-tight">Webpay</p>
-                <p className="text-gold-light text-xs">Débito y Crédito</p>
-              </div>
-            </div>
             {/* Transferencia */}
             <div className="flex items-center gap-2 bg-white/10 border border-gold/20 rounded-xl px-5 py-3 hover:border-gold/50 transition-colors">
               <span className="text-2xl">🏦</span>
@@ -213,20 +205,20 @@ const Precios = () => {
                 <p className="text-gold-light text-xs">Bancaria directa</p>
               </div>
             </div>
-            {/* Cuotas */}
-            <div className="flex items-center gap-2 bg-white/10 border border-gold/20 rounded-xl px-5 py-3 hover:border-gold/50 transition-colors">
-              <span className="text-2xl">📅</span>
-              <div>
-                <p className="text-white font-bold text-sm leading-tight">Cuotas sin interés</p>
-                <p className="text-gold-light text-xs">Hasta 12 cuotas</p>
-              </div>
-            </div>
             {/* Efectivo */}
             <div className="flex items-center gap-2 bg-white/10 border border-gold/20 rounded-xl px-5 py-3 hover:border-gold/50 transition-colors">
               <span className="text-2xl">💵</span>
               <div>
                 <p className="text-white font-bold text-sm leading-tight">Efectivo</p>
                 <p className="text-gold-light text-xs">Pago directo</p>
+              </div>
+            </div>
+            {/* MercadoLibre cuotas */}
+            <div className="flex items-center gap-2 bg-[#ffe600]/10 border border-[#ffe600]/30 rounded-xl px-5 py-3 hover:border-[#ffe600]/60 transition-colors">
+              <span className="text-2xl">🛒</span>
+              <div>
+                <p className="text-white font-bold text-sm leading-tight">MercadoLibre</p>
+                <p className="text-[#ffe600]/80 text-xs">Cuotas disponibles</p>
               </div>
             </div>
           </div>

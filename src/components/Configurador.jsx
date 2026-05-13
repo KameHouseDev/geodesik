@@ -1,318 +1,418 @@
 import { useState } from 'react'
-import { FaWhatsapp, FaTools } from 'react-icons/fa'
+import { FaWhatsapp, FaTools, FaCheck, FaFire, FaBolt, FaLeaf } from 'react-icons/fa'
+import tinaMaiten from '../assets/images/tina_maiten.jpg'
+import tinaMatanza from '../assets/images/tina_matanza.jpg'
+import tinaja6 from '../assets/images/tinaja_6.WebP'
+import sauna1 from '../assets/images/sauna_1.WebP'
+import sauna3 from '../assets/images/sauna_3.WebP'
+import sauna5 from '../assets/images/sauna_5.WebP'
+
+const imagenesPorSeleccion = {
+  tina: { '2p': tinaMaiten, '4p': tinaMatanza, '6p': tinaja6 },
+  sauna: { '2p': sauna1, '4p': sauna3, '6p': sauna5 },
+}
+
+const imagenDefault = {
+  tina: tinaMaiten,
+  sauna: sauna1,
+}
 
 const opciones = {
   tipo: [
-    { id: 'tina', label: 'Tina de baño', emoji: '🛁' },
-    { id: 'sauna', label: 'Sauna', emoji: '🧖' },
+    { id: 'tina', label: 'Tina de baño', emoji: '🛁', desc: 'Madera tratada, calefacción a elección' },
+    { id: 'sauna', label: 'Sauna', emoji: '🧖', desc: 'Calefacción eléctrica, varios tamaños' },
   ],
   tamaño: {
     tina: [
-      { id: '2p', label: '2 personas — Terraza', basePrice: 800000 },
-      { id: '4p', label: '4 personas', basePrice: 1200000 },
-      { id: '6p', label: '6 personas', basePrice: 1400000 },
+      { id: '2p', label: '2 personas', sub: 'Ideal para terraza', basePrice: 800000 },
+      { id: '4p', label: '4 personas', sub: 'El más pedido', basePrice: 1200000, popular: true },
+      { id: '6p', label: '6 personas', sub: 'Para familias grandes', basePrice: 1400000 },
     ],
     sauna: [
-      { id: '2p', label: '2 personas (1.80×1.06 m)', basePrice: 1300000 },
-      { id: '4p', label: '4 personas (1.80×1.60 m)', basePrice: 1990000 },
-      { id: '6p', label: '6 personas (1.90×2.00 m)', basePrice: 2490000 },
+      { id: '2p', label: '2 personas', sub: '1.80 × 1.06 m', basePrice: 1300000 },
+      { id: '4p', label: '4 personas', sub: '1.80 × 1.60 m', basePrice: 1990000, popular: true },
+      { id: '6p', label: '6 personas', sub: '1.90 × 2.00 m', basePrice: 2490000 },
     ],
   },
   madera: [
-    { id: 'pino', label: 'Pino Insigne', extraPrice: 0, desc: 'Incluido en precio base' },
-    { id: 'roble', label: 'Roble Nativo', extraPrice: 150000, desc: '+$150.000 — Mayor durabilidad' },
-    { id: 'alerce', label: 'Alerce (Larch)', extraPrice: 250000, desc: '+$250.000 — Premium resistente al agua' },
+    { id: 'pino-insigne', label: 'Pino Insigne',  extraPrice: 0,       desc: 'Incluido — Madera base, clásica y resistente' },
+    { id: 'pino-oregon',  label: 'Pino Oregon',   extraPrice: 150000,  desc: 'Mayor densidad y durabilidad que el pino insigne' },
+    { id: 'pino-cipres',  label: 'Pino Ciprés',   extraPrice: 250000,  desc: 'Premium — Aroma natural, alta resistencia a la humedad' },
   ],
   calefaccion: {
     tina: [
-      { id: 'lena', label: 'Leña', extraPrice: 0, desc: 'Incluido — Calidez natural' },
-      { id: 'gas', label: 'Gas', extraPrice: 80000, desc: '+$80.000 — Calentamiento rápido' },
-      { id: 'electrica', label: 'Eléctrica', extraPrice: 120000, desc: '+$120.000 — Fácil de controlar' },
+      { id: 'lena-galv',   label: 'Leña — Calefactor galvanizado', icon: <FaFire />,  extraPrice: 0,        desc: 'Incluido — Calidez natural, sistema estándar' },
+      { id: 'lena-inox',   label: 'Leña — Calefactor acero inox',  icon: <FaFire />,  extraPrice: 200000,   desc: 'Mayor durabilidad y resistencia a la corrosión' },
+      { id: 'gas-calefont', label: 'Gas — Calefont',               icon: <FaBolt />,  extraPrice: 600000,   desc: 'Calentamiento rápido, control de temperatura' },
+      { id: 'elec-bomba',  label: 'Eléctrica — Bomba de calor',    icon: <FaBolt />,  extraPrice: 1500000,  desc: 'Alta eficiencia energética, sin humo ni llama' },
     ],
     sauna: [
-      { id: 'electrica', label: 'Eléctrica', extraPrice: 0, desc: 'Incluido — Control digital de temperatura' },
+      { id: 'electrica', label: 'Eléctrica', icon: <FaBolt />, extraPrice: 0, desc: 'Control digital de temperatura, incluido' },
     ],
   },
+  hidromasaje: [
+    { id: 'ninguno',        label: 'Sin hidromasaje',     extraPrice: 0,       desc: 'Solo la experiencia de la tina natural' },
+    { id: 'movimiento',     label: 'Solo movimiento',     extraPrice: 150000,  desc: 'Agitación básica del agua, efecto relajante' },
+    { id: 'jets',           label: 'Jets a presión',      extraPrice: 300000,  desc: 'Chorros de agua a presión para masaje muscular' },
+    { id: 'cascada-inox',  label: 'Cascada acero inox',  extraPrice: 250000,  desc: 'Caída de agua sobre hombros en acero inoxidable' },
+  ],
   extras: {
     tina: [
-      { id: 'led', label: 'LED interior', extraPrice: 0, desc: 'Incluido' },
-      { id: 'hidromasaje', label: 'Sistema Hidromasaje', extraPrice: 80000, desc: '+$80.000' },
-      { id: 'cascada', label: 'Cascada', extraPrice: 60000, desc: '+$60.000' },
-      { id: 'cubierta', label: 'Cubierta aislante', extraPrice: 45000, desc: '+$45.000 — Mantiene el calor' },
+      { id: 'led',      label: 'LED interior',                extraPrice: 50000,   desc: 'Iluminación interior sumergible' },
+      { id: 'resina',   label: 'Impermeabilización con resina', extraPrice: 300000,  desc: 'Protección interior con resina epóxica, mayor durabilidad' },
+      { id: 'cubierta', label: 'Cubierta aislante',             extraPrice: 60000,   desc: 'Mantiene el calor entre usos, reduce consumo' },
     ],
     sauna: [
-      { id: 'luz', label: 'Luz interior', extraPrice: 0, desc: 'Incluido' },
-      { id: 'ventana', label: 'Ventana panorámica', extraPrice: 70000, desc: '+$70.000' },
-      { id: 'aromaterapia', label: 'Kit aromaterapia', extraPrice: 35000, desc: '+$35.000' },
+      { id: 'luz',         label: 'Luz interior',         extraPrice: 0,     desc: 'Incluido en todos los modelos' },
+      { id: 'ventana',     label: 'Ventana panorámica',   extraPrice: 70000,  desc: 'Vidrio templado con vista al exterior' },
+      { id: 'aromaterapia', label: 'Kit aromaterapia',   extraPrice: 35000,  desc: 'Esencias para una experiencia completa' },
     ],
   },
 }
 
-const formatPrice = (price) =>
-  '$' + price.toLocaleString('es-CL')
+const fmt = (n) => '$' + n.toLocaleString('es-CL')
+
+const StepHeader = ({ num, label, done, active }) => (
+  <div className={`flex items-center gap-3 mb-4 ${!active && !done ? 'opacity-40' : ''}`}>
+    <span className={`w-7 h-7 rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0 transition-colors ${done ? 'bg-green-500 text-white' : active ? 'bg-gold text-slate-900' : 'bg-white/10 text-white'}`}>
+      {done ? <FaCheck size={10} /> : num}
+    </span>
+    <p className="text-white font-semibold text-sm">{label}</p>
+  </div>
+)
 
 const Configurador = () => {
   const [tipo, setTipo] = useState('')
   const [tamano, setTamano] = useState('')
-  const [madera, setMadera] = useState('pino')
+  const [madera, setMadera] = useState('pino-insigne')
   const [calefaccion, setCalefaccion] = useState('')
-  const [extrasSeleccionados, setExtrasSeleccionados] = useState([])
+  const [hidromasaje, setHidromasaje] = useState('')
+  const [extras, setExtras] = useState([])
 
-  const resetFromTipo = (nuevoTipo) => {
-    setTipo(nuevoTipo)
+  const resetFromTipo = (t) => {
+    setTipo(t)
     setTamano('')
-    setMadera('pino')
-    setCalefaccion(nuevoTipo === 'sauna' ? 'electrica' : '')
-    setExtrasSeleccionados(nuevoTipo === 'tina' ? ['led'] : ['luz'])
+    setMadera('pino-insigne')
+    setCalefaccion(t === 'sauna' ? 'electrica' : '')
+    setHidromasaje(t === 'tina' ? '' : 'n/a')
+    setExtras(t === 'sauna' ? ['luz'] : [])
   }
 
   const toggleExtra = (id) => {
-    setExtrasSeleccionados((prev) =>
-      prev.includes(id) ? prev.filter((e) => e !== id) : [...prev, id]
-    )
+    setExtras((prev) => prev.includes(id) ? prev.filter((e) => e !== id) : [...prev, id])
   }
 
-  const calcularPrecio = () => {
-    if (!tipo || !tamano) return null
-    const tamanoOpt = opciones.tamaño[tipo].find((t) => t.id === tamano)
-    if (!tamanoOpt) return null
-
-    let total = tamanoOpt.basePrice
-    const maderaOpt = opciones.madera.find((m) => m.id === madera)
-    if (maderaOpt) total += maderaOpt.extraPrice
-
-    const calOpts = opciones.calefaccion[tipo] || []
-    const calOpt = calOpts.find((c) => c.id === calefaccion)
-    if (calOpt) total += calOpt.extraPrice
-
-    const extrasOpts = opciones.extras[tipo] || []
-    extrasSeleccionados.forEach((eId) => {
-      const e = extrasOpts.find((ex) => ex.id === eId)
-      if (e) total += e.extraPrice
-    })
-
-    return total
+  const pasos = {
+    tipo: !!tipo,
+    tamano: !!tamano,
+    calefaccion: !!calefaccion,
+    hidromasaje: tipo === 'sauna' ? true : !!hidromasaje,
   }
+  const pasoCompleto = pasos.tipo && pasos.tamano && pasos.calefaccion && pasos.hidromasaje
 
-  const precio = calcularPrecio()
+  // Imagen dinámica
+  const imagenActual = tipo
+    ? (tamano ? imagenesPorSeleccion[tipo][tamano] : imagenDefault[tipo])
+    : null
+
+  // Cálculo desglosado
+  const tamanoOpt = tipo && tamano ? opciones.tamaño[tipo].find((t) => t.id === tamano) : null
+  const maderaOpt = opciones.madera.find((m) => m.id === madera)
+  const calOpt = tipo ? (opciones.calefaccion[tipo] || []).find((c) => c.id === calefaccion) : null
+  const hidro = opciones.hidromasaje.find((h) => h.id === hidromasaje)
+  const extrasOpts = tipo ? (opciones.extras[tipo] || []) : []
+  const extrasSeleccionados = extrasOpts.filter((e) => extras.includes(e.id) && e.extraPrice > 0)
+
+  const precioBase    = tamanoOpt?.basePrice || 0
+  const precioMadera  = maderaOpt?.extraPrice || 0
+  const precioCal     = calOpt?.extraPrice || 0
+  const precioHidro   = (hidro && hidro.id !== 'ninguno') ? hidro.extraPrice : 0
+  const precioExtras  = extrasSeleccionados.reduce((acc, e) => acc + e.extraPrice, 0)
+  const precioTotal   = precioBase + precioMadera + precioCal + precioHidro + precioExtras
+
+  const numPaso = (n) => tipo === 'sauna' ? n - 1 : n
 
   const mensajeWsp = () => {
-    if (!tipo || !tamano) return 'Hola! Me interesa cotizar un producto.'
-    const tamanoOpt = opciones.tamaño[tipo].find((t) => t.id === tamano)
-    const maderaOpt = opciones.madera.find((m) => m.id === madera)
-    const calOpt = (opciones.calefaccion[tipo] || []).find((c) => c.id === calefaccion)
-    const extrasOpts = opciones.extras[tipo] || []
-    const extrasNombres = extrasSeleccionados
-      .map((id) => extrasOpts.find((e) => e.id === id)?.label)
-      .filter(Boolean)
+    const extrasNombres = extrasOpts
+      .filter((e) => extras.includes(e.id))
+      .map((e) => e.label)
       .join(', ')
-
-    return `Hola! Quiero cotizar:
-• Producto: ${tipo === 'tina' ? 'Tina de baño' : 'Sauna'}
-• Tamaño: ${tamanoOpt?.label}
-• Madera: ${maderaOpt?.label}
-• Calefacción: ${calOpt?.label}
-• Extras: ${extrasNombres || 'Sin extras adicionales'}
-• Precio estimado: ${precio ? formatPrice(precio) : 'por cotizar'}
-
-¿Pueden confirmarme disponibilidad y plazo de entrega?`
+    const hidroLabel = hidro && hidro.id !== 'ninguno' ? hidro.label : 'Sin hidromasaje'
+    const lineasTina = tipo === 'tina' ? `\n• Hidromasaje: ${hidroLabel}` : ''
+    return `Hola! Quiero cotizar:\n• Producto: ${tipo === 'tina' ? 'Tina de baño' : 'Sauna'}\n• Tamaño: ${tamanoOpt?.label} — ${tamanoOpt?.sub}\n• Madera: ${maderaOpt?.label}\n• Calefacción: ${calOpt?.label}${lineasTina}\n• Extras: ${extrasNombres || 'Sin extras'}\n• Precio estimado: ${fmt(precioTotal)}\n\n¿Pueden confirmarme disponibilidad y plazo de entrega?`
   }
-
-  const pasoCompleto = tipo && tamano && calefaccion
 
   return (
     <section id="configurador" className="py-20 bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900">
-      <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+
         {/* Header */}
-        <div className="text-center mb-10">
+        <div className="text-center mb-12">
           <div className="inline-flex items-center gap-2 bg-gold/10 border border-gold/30 text-gold rounded-full px-4 py-1.5 text-xs font-bold uppercase tracking-widest mb-4">
-            <FaTools /> Configura tu producto
+            <FaTools /> Configurador
           </div>
           <h2 className="text-3xl md:text-4xl font-serif font-bold text-white mb-3">
             Arma tu tina o sauna ideal
           </h2>
           <div className="w-16 h-1 bg-gradient-to-r from-gold to-gold-dark mx-auto rounded-full mb-4"></div>
           <p className="text-gold-light text-base max-w-xl mx-auto">
-            Elige las opciones que necesitas y ve el precio estimado al instante.
+            Elige las opciones y ve el precio estimado al instante.
           </p>
         </div>
 
-        <div className="space-y-6">
-          {/* Paso 1: Tipo */}
-          <div className="bg-white/5 border border-gold/20 rounded-2xl p-6">
-            <p className="text-white font-semibold mb-4 flex items-center gap-2">
-              <span className="w-6 h-6 bg-gold text-slate-900 rounded-full flex items-center justify-center text-xs font-bold">1</span>
-              ¿Qué producto te interesa?
-            </p>
-            <div className="grid grid-cols-2 gap-3">
-              {opciones.tipo.map((t) => (
-                <button
-                  key={t.id}
-                  onClick={() => resetFromTipo(t.id)}
-                  className={`flex flex-col items-center gap-2 p-4 rounded-xl border-2 font-semibold transition-all duration-200 ${
-                    tipo === t.id
-                      ? 'border-gold bg-gold/10 text-white'
-                      : 'border-gold/20 text-gold-light hover:border-gold/50'
-                  }`}
-                >
-                  <span className="text-3xl">{t.emoji}</span>
-                  <span className="text-sm">{t.label}</span>
-                </button>
-              ))}
-            </div>
-          </div>
+        {/* Layout 2 columnas */}
+        <div className="flex flex-col lg:flex-row gap-8 items-start">
 
-          {/* Paso 2: Tamaño */}
-          {tipo && (
-            <div className="bg-white/5 border border-gold/20 rounded-2xl p-6 animate-fadeIn">
-              <p className="text-white font-semibold mb-4 flex items-center gap-2">
-                <span className="w-6 h-6 bg-gold text-slate-900 rounded-full flex items-center justify-center text-xs font-bold">2</span>
-                Tamaño / Capacidad
-              </p>
-              <div className="space-y-2">
-                {opciones.tamaño[tipo].map((t) => (
+          {/* ── Columna izquierda: pasos ── */}
+          <div className="flex-1 space-y-5">
+
+            {/* Paso 1: Tipo */}
+            <div className="bg-white/5 border border-gold/20 rounded-2xl p-6">
+              <StepHeader num="1" label="¿Qué producto te interesa?" done={pasos.tipo} active={true} />
+              <div className="grid grid-cols-2 gap-3">
+                {opciones.tipo.map((t) => (
                   <button
                     key={t.id}
-                    onClick={() => setTamano(t.id)}
-                    className={`w-full flex items-center justify-between px-4 py-3 rounded-xl border-2 transition-all duration-200 ${
-                      tamano === t.id
-                        ? 'border-gold bg-gold/10 text-white'
-                        : 'border-gold/20 text-gold-light hover:border-gold/50'
-                    }`}
+                    onClick={() => resetFromTipo(t.id)}
+                    className={`flex flex-col items-center gap-2 p-5 rounded-xl border-2 transition-all duration-200 ${tipo === t.id ? 'border-gold bg-gold/10 text-white' : 'border-gold/20 text-gold-light hover:border-gold/50'}`}
                   >
-                    <span className="text-sm font-medium">{t.label}</span>
-                    <span className="text-xs font-bold text-gold">{formatPrice(t.basePrice)}</span>
+                    <span className="text-4xl">{t.emoji}</span>
+                    <span className="text-sm font-semibold">{t.label}</span>
+                    <span className="text-xs opacity-60 text-center leading-tight">{t.desc}</span>
                   </button>
                 ))}
               </div>
             </div>
-          )}
 
-          {/* Paso 3: Madera */}
-          {tamano && (
-            <div className="bg-white/5 border border-gold/20 rounded-2xl p-6 animate-fadeIn">
-              <p className="text-white font-semibold mb-4 flex items-center gap-2">
-                <span className="w-6 h-6 bg-gold text-slate-900 rounded-full flex items-center justify-center text-xs font-bold">3</span>
-                Tipo de madera
-              </p>
+            {/* Paso 2: Tamaño */}
+            <div className={`bg-white/5 border rounded-2xl p-6 transition-all duration-300 ${pasos.tipo ? 'border-gold/20' : 'border-gold/10 opacity-50 pointer-events-none'}`}>
+              <StepHeader num="2" label="Tamaño / Capacidad" done={pasos.tamano} active={pasos.tipo} />
+              <div className="space-y-2">
+                {(tipo ? opciones.tamaño[tipo] : opciones.tamaño.tina).map((t) => (
+                  <button
+                    key={t.id}
+                    onClick={() => pasos.tipo && setTamano(t.id)}
+                    className={`w-full flex items-center justify-between px-4 py-3 rounded-xl border-2 transition-all duration-200 ${tamano === t.id ? 'border-gold bg-gold/10 text-white' : 'border-gold/20 text-gold-light hover:border-gold/50'}`}
+                  >
+                    <div className="text-left">
+                      <p className="text-sm font-semibold">{t.label}</p>
+                      <p className="text-xs opacity-60">{t.sub}</p>
+                    </div>
+                    <div className="text-right">
+                      <p className="text-xs font-bold text-gold">{fmt(t.basePrice)}</p>
+                      {t.popular && <p className="text-[10px] text-gold/60">Más pedido</p>}
+                    </div>
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Paso 3: Madera */}
+            <div className={`bg-white/5 border rounded-2xl p-6 transition-all duration-300 ${pasos.tamano ? 'border-gold/20' : 'border-gold/10 opacity-50 pointer-events-none'}`}>
+              <StepHeader num="3" label="Tipo de madera" done={pasos.tamano} active={pasos.tamano} />
               <div className="space-y-2">
                 {opciones.madera.map((m) => (
                   <button
                     key={m.id}
-                    onClick={() => setMadera(m.id)}
-                    className={`w-full flex items-center justify-between px-4 py-3 rounded-xl border-2 transition-all duration-200 ${
-                      madera === m.id
-                        ? 'border-gold bg-gold/10 text-white'
-                        : 'border-gold/20 text-gold-light hover:border-gold/50'
-                    }`}
+                    onClick={() => pasos.tamano && setMadera(m.id)}
+                    className={`w-full flex items-center justify-between px-4 py-3 rounded-xl border-2 transition-all duration-200 ${madera === m.id ? 'border-gold bg-gold/10 text-white' : 'border-gold/20 text-gold-light hover:border-gold/50'}`}
                   >
                     <div className="text-left">
-                      <p className="text-sm font-medium">{m.label}</p>
-                      <p className="text-xs text-gold-light/70">{m.desc}</p>
+                      <p className="text-sm font-semibold flex items-center gap-2">
+                        <FaLeaf className="text-green-400 text-xs" /> {m.label}
+                      </p>
+                      <p className="text-xs opacity-60">{m.desc}</p>
                     </div>
                     {m.extraPrice > 0 && (
-                      <span className="text-xs font-bold text-gold whitespace-nowrap ml-2">
-                        +{formatPrice(m.extraPrice)}
-                      </span>
+                      <span className="text-xs font-bold text-gold ml-2 whitespace-nowrap">+{fmt(m.extraPrice)}</span>
                     )}
                   </button>
                 ))}
               </div>
             </div>
-          )}
 
-          {/* Paso 4: Calefacción */}
-          {tamano && tipo === 'tina' && (
-            <div className="bg-white/5 border border-gold/20 rounded-2xl p-6 animate-fadeIn">
-              <p className="text-white font-semibold mb-4 flex items-center gap-2">
-                <span className="w-6 h-6 bg-gold text-slate-900 rounded-full flex items-center justify-center text-xs font-bold">4</span>
-                Sistema de calefacción
-              </p>
-              <div className="space-y-2">
-                {opciones.calefaccion[tipo].map((c) => (
-                  <button
-                    key={c.id}
-                    onClick={() => setCalefaccion(c.id)}
-                    className={`w-full flex items-center justify-between px-4 py-3 rounded-xl border-2 transition-all duration-200 ${
-                      calefaccion === c.id
-                        ? 'border-gold bg-gold/10 text-white'
-                        : 'border-gold/20 text-gold-light hover:border-gold/50'
-                    }`}
-                  >
-                    <div className="text-left">
-                      <p className="text-sm font-medium">{c.label}</p>
-                      <p className="text-xs text-gold-light/70">{c.desc}</p>
-                    </div>
-                    {c.extraPrice > 0 && (
-                      <span className="text-xs font-bold text-gold whitespace-nowrap ml-2">
-                        +{formatPrice(c.extraPrice)}
-                      </span>
-                    )}
-                  </button>
-                ))}
+            {/* Paso 4: Calefacción (solo tina) */}
+            {tipo === 'tina' && (
+              <div className={`bg-white/5 border rounded-2xl p-6 transition-all duration-300 ${pasos.tamano ? 'border-gold/20' : 'border-gold/10 opacity-50 pointer-events-none'}`}>
+                <StepHeader num="4" label="Sistema de calefacción" done={!!calefaccion} active={pasos.tamano} />
+                <div className="space-y-2">
+                  {opciones.calefaccion.tina.map((c) => (
+                    <button
+                      key={c.id}
+                      onClick={() => pasos.tamano && setCalefaccion(c.id)}
+                      className={`w-full flex items-center justify-between px-4 py-3 rounded-xl border-2 transition-all duration-200 ${calefaccion === c.id ? 'border-gold bg-gold/10 text-white' : 'border-gold/20 text-gold-light hover:border-gold/50'}`}
+                    >
+                      <div className="text-left">
+                        <p className="text-sm font-semibold">{c.label}</p>
+                        <p className="text-xs opacity-60">{c.desc}</p>
+                      </div>
+                      {c.extraPrice > 0 && (
+                        <span className="text-xs font-bold text-gold ml-2 whitespace-nowrap">+{fmt(c.extraPrice)}</span>
+                      )}
+                    </button>
+                  ))}
+                </div>
               </div>
-            </div>
-          )}
+            )}
 
-          {/* Paso 5: Extras */}
-          {pasoCompleto && (
-            <div className="bg-white/5 border border-gold/20 rounded-2xl p-6 animate-fadeIn">
-              <p className="text-white font-semibold mb-4 flex items-center gap-2">
-                <span className="w-6 h-6 bg-gold text-slate-900 rounded-full flex items-center justify-center text-xs font-bold">
-                  {tipo === 'tina' ? '5' : '4'}
-                </span>
-                Complementos (opcional)
-              </p>
+            {/* Paso 5: Hidromasaje (solo tina) */}
+            {tipo === 'tina' && (
+              <div className={`bg-white/5 border rounded-2xl p-6 transition-all duration-300 ${pasos.calefaccion ? 'border-gold/20' : 'border-gold/10 opacity-50 pointer-events-none'}`}>
+                <StepHeader num="5" label="Sistema de hidromasaje" done={pasos.hidromasaje} active={pasos.calefaccion} />
+                <div className="space-y-2">
+                  {opciones.hidromasaje.map((h) => (
+                    <button
+                      key={h.id}
+                      onClick={() => pasos.calefaccion && setHidromasaje(h.id)}
+                      className={`w-full flex items-center justify-between px-4 py-3 rounded-xl border-2 transition-all duration-200 ${hidromasaje === h.id ? 'border-gold bg-gold/10 text-white' : 'border-gold/20 text-gold-light hover:border-gold/50'}`}
+                    >
+                      <div className="text-left">
+                        <p className="text-sm font-semibold">{h.label}</p>
+                        <p className="text-xs opacity-60">{h.desc}</p>
+                      </div>
+                      {h.extraPrice > 0 && (
+                        <span className="text-xs font-bold text-gold ml-2 whitespace-nowrap">+{fmt(h.extraPrice)}</span>
+                      )}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* Paso 6 / 5: Extras */}
+            <div className={`bg-white/5 border rounded-2xl p-6 transition-all duration-300 ${pasoCompleto ? 'border-gold/20' : 'border-gold/10 opacity-50 pointer-events-none'}`}>
+              <StepHeader num={tipo === 'tina' ? '6' : '5'} label="Complementos opcionales" done={false} active={pasoCompleto} />
               <div className="space-y-2">
-                {(opciones.extras[tipo] || []).map((e) => {
+                {(tipo ? opciones.extras[tipo] : []).map((e) => {
                   const incluido = e.extraPrice === 0
-                  const seleccionado = extrasSeleccionados.includes(e.id)
+                  const sel = extras.includes(e.id)
                   return (
                     <button
                       key={e.id}
-                      onClick={() => !incluido && toggleExtra(e.id)}
+                      onClick={() => !incluido && pasoCompleto && toggleExtra(e.id)}
                       disabled={incluido}
                       className={`w-full flex items-center justify-between px-4 py-3 rounded-xl border-2 transition-all duration-200 ${
-                        incluido
-                          ? 'border-green-500/30 bg-green-500/5 text-green-400 cursor-default'
-                          : seleccionado
-                          ? 'border-gold bg-gold/10 text-white'
-                          : 'border-gold/20 text-gold-light hover:border-gold/50'
+                        incluido ? 'border-green-500/30 bg-green-500/5 cursor-default' :
+                        sel ? 'border-gold bg-gold/10 text-white' :
+                        'border-gold/20 text-gold-light hover:border-gold/50'
                       }`}
                     >
-                      <div className="flex items-center gap-2 text-left">
-                        <span className="text-sm">{incluido ? '✓' : seleccionado ? '✓' : '+'}</span>
+                      <div className="flex items-center gap-3 text-left">
+                        <span className={`w-5 h-5 rounded-full border-2 flex items-center justify-center flex-shrink-0 text-[10px] ${incluido ? 'border-green-500 bg-green-500 text-white' : sel ? 'border-gold bg-gold text-slate-900' : 'border-gold/40'}`}>
+                          {(incluido || sel) && <FaCheck />}
+                        </span>
                         <div>
-                          <p className="text-sm font-medium">{e.label}</p>
-                          <p className="text-xs opacity-70">{e.desc}</p>
+                          <p className={`text-sm font-semibold ${incluido ? 'text-green-400' : ''}`}>{e.label}</p>
+                          <p className="text-xs opacity-60">{e.desc}</p>
                         </div>
                       </div>
+                      {e.extraPrice > 0 && (
+                        <span className="text-xs font-bold text-gold ml-2 whitespace-nowrap">+{fmt(e.extraPrice)}</span>
+                      )}
                     </button>
                   )
                 })}
               </div>
             </div>
-          )}
+          </div>
 
-          {/* Resultado de precio */}
-          {pasoCompleto && precio !== null && (
-            <div className="bg-gradient-to-br from-gold/20 to-gold/5 border-2 border-gold rounded-2xl p-6 text-center animate-fadeIn shadow-xl shadow-gold/20">
-              <p className="text-gold-light text-sm uppercase tracking-widest mb-1 font-semibold">Precio estimado</p>
-              <p className="text-5xl font-bold text-white mb-1">{formatPrice(precio)}</p>
-              <p className="text-gold-light/70 text-xs mb-6">
-                * Precio referencial. Confirmamos el valor exacto al cotizar.
-              </p>
-              <a
-                href={`https://wa.me/+56939036058?text=${encodeURIComponent(mensajeWsp())}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-full inline-flex items-center justify-center gap-2 px-6 py-4 bg-green-500 hover:bg-green-600 text-white font-bold rounded-xl transform hover:scale-105 transition-all duration-300 shadow-lg text-base"
-              >
-                <FaWhatsapp size={20} />
-                Cotizar esta configuración por WhatsApp
-              </a>
+          {/* ── Columna derecha: resumen sticky ── */}
+          <div className="w-full lg:w-80 xl:w-96 lg:sticky lg:top-24">
+            <div className="bg-white/5 border border-gold/20 rounded-2xl overflow-hidden shadow-xl">
+
+              {/* Imagen dinámica */}
+              <div className="relative h-52 bg-slate-800 overflow-hidden">
+                {imagenActual ? (
+                  <img
+                    key={imagenActual}
+                    src={imagenActual}
+                    alt="Preview producto"
+                    className="w-full h-full object-cover transition-opacity duration-500"
+                  />
+                ) : (
+                  <div className="w-full h-full flex items-center justify-center">
+                    <p className="text-gold-light/40 text-sm">Selecciona un producto</p>
+                  </div>
+                )}
+                <div className="absolute inset-0 bg-gradient-to-t from-slate-900/80 to-transparent" />
+                {tipo && (
+                  <div className="absolute bottom-3 left-4">
+                    <p className="text-white font-serif font-bold text-lg leading-tight">
+                      {tipo === 'tina' ? 'Tina de baño' : 'Sauna'}
+                      {tamanoOpt && ` · ${tamanoOpt.label}`}
+                    </p>
+                  </div>
+                )}
+              </div>
+
+              {/* Desglose */}
+              <div className="p-5 space-y-3">
+                <p className="text-gold text-xs font-bold uppercase tracking-widest mb-3">Resumen de tu configuración</p>
+
+                {tamanoOpt ? (
+                  <div className="space-y-2 text-sm">
+                    <div className="flex justify-between text-gold-light">
+                      <span>Precio base ({tamanoOpt.label})</span>
+                      <span className="text-white font-semibold">{fmt(precioBase)}</span>
+                    </div>
+                    {precioMadera > 0 && (
+                      <div className="flex justify-between text-gold-light">
+                        <span>Madera {maderaOpt?.label}</span>
+                        <span className="text-white font-semibold">+{fmt(precioMadera)}</span>
+                      </div>
+                    )}
+                    {precioCal > 0 && (
+                      <div className="flex justify-between text-gold-light">
+                        <span>Calefacción</span>
+                        <span className="text-white font-semibold">+{fmt(precioCal)}</span>
+                      </div>
+                    )}
+                    {precioHidro > 0 && (
+                      <div className="flex justify-between text-gold-light">
+                        <span>{hidro?.label}</span>
+                        <span className="text-white font-semibold">+{fmt(precioHidro)}</span>
+                      </div>
+                    )}
+                    {extrasSeleccionados.map((e) => (
+                      <div key={e.id} className="flex justify-between text-gold-light">
+                        <span>{e.label}</span>
+                        <span className="text-white font-semibold">+{fmt(e.extraPrice)}</span>
+                      </div>
+                    ))}
+                    <div className="border-t border-gold/20 pt-3 flex justify-between items-end">
+                      <span className="text-gold-light text-xs">Precio estimado</span>
+                      <span className="text-3xl font-bold text-white">{fmt(precioTotal)}</span>
+                    </div>
+                    <p className="text-gold-light/50 text-[11px]">* Valor referencial. Confirmamos al cotizar.</p>
+                  </div>
+                ) : (
+                  <div className="space-y-2">
+                    {['Tipo de producto', 'Tamaño', 'Madera', 'Calefacción', 'Extras'].map((item) => (
+                      <div key={item} className="flex justify-between text-sm">
+                        <span className="text-gold-light/50">{item}</span>
+                        <span className="text-white/20 text-xs">—</span>
+                      </div>
+                    ))}
+                    <div className="border-t border-gold/10 pt-3">
+                      <p className="text-gold-light/40 text-xs text-center">Completa la configuración para ver el precio</p>
+                    </div>
+                  </div>
+                )}
+
+                {/* CTA */}
+                <a
+                  href={pasoCompleto ? `https://wa.me/+56939036058?text=${encodeURIComponent(mensajeWsp())}` : '#configurador'}
+                  target={pasoCompleto ? '_blank' : '_self'}
+                  rel="noopener noreferrer"
+                  className={`mt-2 w-full flex items-center justify-center gap-2 px-6 py-3.5 font-bold rounded-xl transition-all duration-300 text-sm ${pasoCompleto ? 'bg-green-500 hover:bg-green-600 text-white shadow-lg shadow-green-500/20 hover:scale-105' : 'bg-white/5 text-white/30 cursor-not-allowed border border-white/10'}`}
+                >
+                  <FaWhatsapp size={18} />
+                  {pasoCompleto ? 'Cotizar esta configuración' : 'Completa los pasos para cotizar'}
+                </a>
+              </div>
             </div>
-          )}
+          </div>
+
         </div>
       </div>
     </section>
@@ -320,3 +420,4 @@ const Configurador = () => {
 }
 
 export default Configurador
+
