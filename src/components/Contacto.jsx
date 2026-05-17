@@ -14,6 +14,7 @@ const Contacto = () => {
   const [submitStatus, setSubmitStatus] = useState(null)
   const [recaptchaReady, setRecaptchaReady] = useState(false)
   const [recaptchaMode, setRecaptchaMode] = useState(import.meta.env.VITE_RECAPTCHA_TYPE || 'v3')
+  const [recaptchaLoadFailed, setRecaptchaLoadFailed] = useState(false)
   const captchaWidgetId = useRef(null)
   const formCreatedAt = useRef(Date.now())
   const siteKey = import.meta.env.VITE_RECAPTCHA_SITE_KEY
@@ -99,17 +100,27 @@ const Contacto = () => {
           return
         }
 
-        window.grecaptcha.execute(captchaWidgetId.current)
+        try {
+          window.grecaptcha.execute(captchaWidgetId.current)
+        } catch (error) {
+          console.error('reCAPTCHA v2 execute failed:', error)
+          setSubmitStatus({
+            type: 'error',
+            message: 'Clave de reCAPTCHA inválida o no autorizada para este dominio. Revisa tu configuración en Google.',
+          })
+          setIsSubmitting(false)
+        }
       } else {
         window.grecaptcha.execute(siteKey, { action: 'contacto' })
           .then(submitContact)
           .catch((error) => {
             console.error('reCAPTCHA failed:', error)
-            if (error && String(error).includes('Invalid site key')) {
+            const invalidKey = error && String(error).includes('Invalid site key')
+            if (invalidKey) {
               setRecaptchaMode('v2')
               setSubmitStatus({
                 type: 'error',
-                message: 'El sitio intentó reCAPTCHA v3 y el sitio clave no coincide. Se cambiará a invisible v2, intenta de nuevo.',
+                message: 'Clave de reCAPTCHA v3 inválida o no autorizada. Se cambiará a invisible v2, intenta de nuevo.',
               })
             } else {
               setSubmitStatus({
@@ -166,10 +177,18 @@ const Contacto = () => {
     script.async = true
     script.defer = true
     script.onload = prepareRecaptcha
+    script.onerror = () => {
+      setRecaptchaLoadFailed(true)
+      setSubmitStatus({
+        type: 'error',
+        message: 'No se pudo cargar reCAPTCHA. Verifica tu clave de sitio y que el dominio esté autorizado en Google.',
+      })
+    }
     document.body.appendChild(script)
 
     return () => {
       script.onload = null
+      script.onerror = null
     }
   }, [siteKey, recaptchaMode])
 
