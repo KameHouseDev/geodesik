@@ -54,10 +54,16 @@ jobs:
           scp -o StrictHostKeyChecking=no -o ConnectTimeout=10 -o BatchMode=yes -i private_key.pem -r dist/* admin@$LIGHTSAIL_IP:/var/www/html/
           ssh -o StrictHostKeyChecking=no -o ConnectTimeout=10 -o BatchMode=yes -i private_key.pem admin@$LIGHTSAIL_IP "sudo chown -R www-data:www-data /var/www/html && sudo chmod -R 755 /var/www/html"
           
-          # Deploy Backend
-          ssh -o StrictHostKeyChecking=no -o ConnectTimeout=10 -o BatchMode=yes -i private_key.pem admin@$LIGHTSAIL_IP "sudo mkdir -p /var/www/backend && sudo chown -R admin:admin /var/www/backend"
-          scp -o StrictHostKeyChecking=no -o ConnectTimeout=10 -o BatchMode=yes -i private_key.pem -r backend/* admin@$LIGHTSAIL_IP:/var/www/backend/
-          
+          # Deploy Backend (package without local node_modules)
+          cd backend
+          tar --exclude='./node_modules' --exclude='./.git' -czf ../backend.tar.gz .
+          cd ..
+
+          scp -o StrictHostKeyChecking=no -o ConnectTimeout=10 -o BatchMode=yes -i private_key.pem backend.tar.gz admin@$LIGHTSAIL_IP:/tmp/backend.tar.gz
+          ssh -o StrictHostKeyChecking=no -o ConnectTimeout=10 -o BatchMode=yes -i private_key.pem admin@$LIGHTSAIL_IP "sudo rm -rf /var/www/backend && sudo mkdir -p /var/www/backend && sudo chown -R admin:admin /var/www/backend"
+          ssh -o StrictHostKeyChecking=no -o ConnectTimeout=10 -o BatchMode=yes -i private_key.pem admin@$LIGHTSAIL_IP "tar -xzf /tmp/backend.tar.gz -C /var/www/backend && rm -f /tmp/backend.tar.gz"
+          rm -f backend.tar.gz
+
           # Create .env file for backend
           ssh -o StrictHostKeyChecking=no -o ConnectTimeout=10 -o BatchMode=yes -i private_key.pem admin@$LIGHTSAIL_IP "echo 'PORT=3001' > /var/www/backend/.env"
           ssh -o StrictHostKeyChecking=no -o ConnectTimeout=10 -o BatchMode=yes -i private_key.pem admin@$LIGHTSAIL_IP "echo 'AWS_REGION=us-east-1' >> /var/www/backend/.env"
@@ -67,7 +73,10 @@ jobs:
           ssh -o StrictHostKeyChecking=no -o ConnectTimeout=10 -o BatchMode=yes -i private_key.pem admin@$LIGHTSAIL_IP "echo 'SES_TO_EMAIL=${SES_TO_EMAIL}' >> /var/www/backend/.env"
           ssh -o StrictHostKeyChecking=no -o ConnectTimeout=10 -o BatchMode=yes -i private_key.pem admin@$LIGHTSAIL_IP "echo 'RECAPTCHA_SECRET_KEY=${RECAPTCHA_SECRET_KEY}' >> /var/www/backend/.env"
           ssh -o StrictHostKeyChecking=no -o ConnectTimeout=10 -o BatchMode=yes -i private_key.pem admin@$LIGHTSAIL_IP "echo 'CORS_ORIGIN=https://geodesik.cl' >> /var/www/backend/.env"
-          
+
+          # Install backend dependencies on the server
+          ssh -o StrictHostKeyChecking=no -o ConnectTimeout=10 -o BatchMode=yes -i private_key.pem admin@$LIGHTSAIL_IP "cd /var/www/backend && npm install --production"
+
           # Install PM2 if not installed and start/restart backend
           ssh -o StrictHostKeyChecking=no -i private_key.pem admin@$LIGHTSAIL_IP "
             sudo npm install -g pm2 || true &&
