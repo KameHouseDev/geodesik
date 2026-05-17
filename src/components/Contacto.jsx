@@ -13,7 +13,7 @@ const Contacto = () => {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [submitStatus, setSubmitStatus] = useState(null)
   const [recaptchaReady, setRecaptchaReady] = useState(false)
-  const [recaptchaMode, setRecaptchaMode] = useState(import.meta.env.VITE_RECAPTCHA_TYPE || 'v2')
+  const [recaptchaMode, setRecaptchaMode] = useState(import.meta.env.VITE_RECAPTCHA_TYPE || 'v3')
   const captchaWidgetId = useRef(null)
   const formCreatedAt = useRef(Date.now())
   const siteKey = import.meta.env.VITE_RECAPTCHA_SITE_KEY
