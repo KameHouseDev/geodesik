@@ -114,6 +114,7 @@ En la raíz del proyecto, crea un archivo `.env` y agrega:
 
 ```
 VITE_RECAPTCHA_SITE_KEY=tu_recaptcha_site_key_aqui
+VITE_RECAPTCHA_TYPE=v2
 ```
 
 En el backend, crea o actualiza `backend/.env` con:
@@ -121,6 +122,8 @@ En el backend, crea o actualiza `backend/.env` con:
 ```
 RECAPTCHA_SECRET_KEY=tu_recaptcha_secret_key_aqui
 ```
+
+Si tu clave es de reCAPTCHA v3, puedes omitir `VITE_RECAPTCHA_TYPE` o usar `VITE_RECAPTCHA_TYPE=v3`.
 
 ## 🌐 URLs
 
@@ -172,4 +175,4 @@ pm2 logs geodesik-backend
 
 ## 📄 Licencia
 
-Propietario - Geodesik © 2026
+Propietario - Geodesik © 2026   
