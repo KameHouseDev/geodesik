@@ -50,23 +50,23 @@ jobs:
           chmod 600 private_key.pem
           
           # Deploy Frontend
-          ssh -o StrictHostKeyChecking=no -i private_key.pem admin@$LIGHTSAIL_IP "sudo mkdir -p /var/www/html && sudo chown -R admin:admin /var/www/html && sudo rm -rf /var/www/html/*"
-          scp -o StrictHostKeyChecking=no -i private_key.pem -r dist/* admin@$LIGHTSAIL_IP:/var/www/html/
-          ssh -o StrictHostKeyChecking=no -i private_key.pem admin@$LIGHTSAIL_IP "sudo chown -R www-data:www-data /var/www/html && sudo chmod -R 755 /var/www/html"
+          ssh -o StrictHostKeyChecking=no -o ConnectTimeout=10 -o BatchMode=yes -i private_key.pem admin@$LIGHTSAIL_IP "sudo mkdir -p /var/www/html && sudo chown -R admin:admin /var/www/html && sudo rm -rf /var/www/html/*"
+          scp -o StrictHostKeyChecking=no -o ConnectTimeout=10 -o BatchMode=yes -i private_key.pem -r dist/* admin@$LIGHTSAIL_IP:/var/www/html/
+          ssh -o StrictHostKeyChecking=no -o ConnectTimeout=10 -o BatchMode=yes -i private_key.pem admin@$LIGHTSAIL_IP "sudo chown -R www-data:www-data /var/www/html && sudo chmod -R 755 /var/www/html"
           
           # Deploy Backend
-          ssh -o StrictHostKeyChecking=no -i private_key.pem admin@$LIGHTSAIL_IP "sudo mkdir -p /var/www/backend && sudo chown -R admin:admin /var/www/backend"
-          scp -o StrictHostKeyChecking=no -i private_key.pem -r backend/* admin@$LIGHTSAIL_IP:/var/www/backend/
+          ssh -o StrictHostKeyChecking=no -o ConnectTimeout=10 -o BatchMode=yes -i private_key.pem admin@$LIGHTSAIL_IP "sudo mkdir -p /var/www/backend && sudo chown -R admin:admin /var/www/backend"
+          scp -o StrictHostKeyChecking=no -o ConnectTimeout=10 -o BatchMode=yes -i private_key.pem -r backend/* admin@$LIGHTSAIL_IP:/var/www/backend/
           
           # Create .env file for backend
-          ssh -o StrictHostKeyChecking=no -i private_key.pem admin@$LIGHTSAIL_IP "echo 'PORT=3001' > /var/www/backend/.env"
-          ssh -o StrictHostKeyChecking=no -i private_key.pem admin@$LIGHTSAIL_IP "echo 'AWS_REGION=us-east-1' >> /var/www/backend/.env"
-          ssh -o StrictHostKeyChecking=no -i private_key.pem admin@$LIGHTSAIL_IP "echo 'AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}' >> /var/www/backend/.env"
-          ssh -o StrictHostKeyChecking=no -i private_key.pem admin@$LIGHTSAIL_IP "echo 'AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}' >> /var/www/backend/.env"
-          ssh -o StrictHostKeyChecking=no -i private_key.pem admin@$LIGHTSAIL_IP "echo 'SES_FROM_EMAIL=${SES_FROM_EMAIL}' >> /var/www/backend/.env"
-          ssh -o StrictHostKeyChecking=no -i private_key.pem admin@$LIGHTSAIL_IP "echo 'SES_TO_EMAIL=${SES_TO_EMAIL}' >> /var/www/backend/.env"
-          ssh -o StrictHostKeyChecking=no -i private_key.pem admin@$LIGHTSAIL_IP "echo 'RECAPTCHA_SECRET_KEY=${RECAPTCHA_SECRET_KEY}' >> /var/www/backend/.env"
-          ssh -o StrictHostKeyChecking=no -i private_key.pem admin@$LIGHTSAIL_IP "echo 'CORS_ORIGIN=https://geodesik.cl' >> /var/www/backend/.env"
+          ssh -o StrictHostKeyChecking=no -o ConnectTimeout=10 -o BatchMode=yes -i private_key.pem admin@$LIGHTSAIL_IP "echo 'PORT=3001' > /var/www/backend/.env"
+          ssh -o StrictHostKeyChecking=no -o ConnectTimeout=10 -o BatchMode=yes -i private_key.pem admin@$LIGHTSAIL_IP "echo 'AWS_REGION=us-east-1' >> /var/www/backend/.env"
+          ssh -o StrictHostKeyChecking=no -o ConnectTimeout=10 -o BatchMode=yes -i private_key.pem admin@$LIGHTSAIL_IP "echo 'AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}' >> /var/www/backend/.env"
+          ssh -o StrictHostKeyChecking=no -o ConnectTimeout=10 -o BatchMode=yes -i private_key.pem admin@$LIGHTSAIL_IP "echo 'AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}' >> /var/www/backend/.env"
+          ssh -o StrictHostKeyChecking=no -o ConnectTimeout=10 -o BatchMode=yes -i private_key.pem admin@$LIGHTSAIL_IP "echo 'SES_FROM_EMAIL=${SES_FROM_EMAIL}' >> /var/www/backend/.env"
+          ssh -o StrictHostKeyChecking=no -o ConnectTimeout=10 -o BatchMode=yes -i private_key.pem admin@$LIGHTSAIL_IP "echo 'SES_TO_EMAIL=${SES_TO_EMAIL}' >> /var/www/backend/.env"
+          ssh -o StrictHostKeyChecking=no -o ConnectTimeout=10 -o BatchMode=yes -i private_key.pem admin@$LIGHTSAIL_IP "echo 'RECAPTCHA_SECRET_KEY=${RECAPTCHA_SECRET_KEY}' >> /var/www/backend/.env"
+          ssh -o StrictHostKeyChecking=no -o ConnectTimeout=10 -o BatchMode=yes -i private_key.pem admin@$LIGHTSAIL_IP "echo 'CORS_ORIGIN=https://geodesik.cl' >> /var/www/backend/.env"
           
           # Install PM2 if not installed and start/restart backend
           ssh -o StrictHostKeyChecking=no -i private_key.pem admin@$LIGHTSAIL_IP "
