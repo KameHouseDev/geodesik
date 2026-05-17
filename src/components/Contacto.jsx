@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { FaMapMarkerAlt, FaPhone, FaEnvelope, FaClock } from 'react-icons/fa'
 
 const Contacto = () => {
@@ -8,9 +8,13 @@ const Contacto = () => {
     telefono: '',
     interes: '',
     mensaje: '',
+    website: '',
   })
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [submitStatus, setSubmitStatus] = useState(null)
+  const [recaptchaReady, setRecaptchaReady] = useState(false)
+  const formCreatedAt = useRef(Date.now())
+  const siteKey = import.meta.env.VITE_RECAPTCHA_SITE_KEY
 
   const handleChange = (e) => {
     setFormData({
@@ -19,18 +23,18 @@ const Contacto = () => {
     })
   }
 
-  const handleSubmit = async (e) => {
-    e.preventDefault()
-    setIsSubmitting(true)
-    setSubmitStatus(null)
-
+  const submitContact = async (token) => {
     try {
       const response = await fetch('/api/contact', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify({
+          ...formData,
+          formCreatedAt: formCreatedAt.current,
+          captchaToken: token,
+        }),
       })
 
       const data = await response.json()
@@ -43,7 +47,9 @@ const Contacto = () => {
           telefono: '',
           interes: '',
           mensaje: '',
+          website: '',
         })
+        formCreatedAt.current = Date.now()
       } else {
         setSubmitStatus({ type: 'error', message: data.message })
       }
@@ -56,6 +62,65 @@ const Contacto = () => {
       setIsSubmitting(false)
     }
   }
+
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+    setIsSubmitting(true)
+    setSubmitStatus(null)
+
+    if (!siteKey) {
+      setSubmitStatus({
+        type: 'error',
+        message: 'Captcha no configurado. Contacta al administrador.',
+      })
+      setIsSubmitting(false)
+      return
+    }
+
+    if (!window.grecaptcha || !recaptchaReady) {
+      setSubmitStatus({
+        type: 'error',
+        message: 'Captcha aún no está listo. Intenta de nuevo en unos segundos.',
+      })
+      setIsSubmitting(false)
+      return
+    }
+
+    window.grecaptcha.ready(() => {
+      window.grecaptcha.execute(siteKey, { action: 'contacto' })
+        .then(submitContact)
+        .catch((error) => {
+          console.error('reCAPTCHA failed:', error)
+          setSubmitStatus({
+            type: 'error',
+            message: 'No se pudo validar el captcha. Intenta nuevamente.',
+          })
+          setIsSubmitting(false)
+        })
+    })
+  }
+
+  useEffect(() => {
+    if (!siteKey) return
+
+    const scriptId = 'recaptcha-script'
+    if (document.getElementById(scriptId)) {
+      setRecaptchaReady(true)
+      return
+    }
+
+    const script = document.createElement('script')
+    script.id = scriptId
+    script.src = `https://www.google.com/recaptcha/api.js?render=${siteKey}`
+    script.async = true
+    script.defer = true
+    script.onload = () => setRecaptchaReady(true)
+    document.body.appendChild(script)
+
+    return () => {
+      script.onload = null
+    }
+  }, [siteKey])
 
   const contactInfo = [
     {
@@ -188,6 +253,16 @@ const Contacto = () => {
                   className="w-full px-4 py-3 bg-white/10 border-2 border-gold/30 rounded-lg focus:border-gold focus:outline-none transition-colors resize-none text-white placeholder-gold-light/60"
                 ></textarea>
               </div>
+
+              <input
+                type="text"
+                name="website"
+                value={formData.website}
+                onChange={handleChange}
+                autoComplete="off"
+                tabIndex="-1"
+                className="hidden"
+              />
 
               {submitStatus && (
                 <div className={`mb-6 p-4 rounded-lg ${

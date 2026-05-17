@@ -3,6 +3,7 @@ const express = require('express');
 const cors = require('cors');
 const helmet = require('helmet');
 const rateLimit = require('express-rate-limit');
+const https = require('https');
 const { SESClient, SendEmailCommand } = require('@aws-sdk/client-ses');
 
 const app = express();
@@ -16,6 +17,51 @@ const sesClient = new SESClient({
     secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
   },
 });
+
+const verifyRecaptchaToken = (token) => {
+  const secret = process.env.RECAPTCHA_SECRET_KEY;
+  if (!secret) {
+    throw new Error('RECAPTCHA_SECRET_KEY no configurada');
+  }
+
+  const postData = new URLSearchParams({
+    secret,
+    response: token,
+  }).toString();
+
+  return new Promise((resolve, reject) => {
+    const request = https.request(
+      {
+        hostname: 'www.google.com',
+        path: '/recaptcha/api/siteverify',
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+          'Content-Length': Buffer.byteLength(postData),
+        },
+      },
+      (res) => {
+        let body = '';
+
+        res.on('data', (chunk) => {
+          body += chunk;
+        });
+
+        res.on('end', () => {
+          try {
+            resolve(JSON.parse(body));
+          } catch (error) {
+            reject(error);
+          }
+        });
+      }
+    );
+
+    request.on('error', reject);
+    request.write(postData);
+    request.end();
+  });
+};
 
 // Middlewares de seguridad
 app.use(helmet());
@@ -55,7 +101,45 @@ app.get('/api/debug', (req, res) => {
 
 // Endpoint de contacto
 app.post('/api/contact', async (req, res) => {
-  const { nombre, email, telefono, interes, mensaje } = req.body;
+  const { nombre, email, telefono, interes, mensaje, website, formCreatedAt, captchaToken } = req.body;
+
+  if (website) {
+    return res.status(400).json({
+      success: false,
+      message: 'Envío inválido detectado.',
+    });
+  }
+
+  if (!captchaToken) {
+    return res.status(400).json({
+      success: false,
+      message: 'Captcha inválido o no enviado.',
+    });
+  }
+
+  try {
+    const verification = await verifyRecaptchaToken(captchaToken);
+    if (!verification.success) {
+      return res.status(400).json({
+        success: false,
+        message: 'Captcha inválido. Por favor intenta nuevamente.',
+      });
+    }
+  } catch (error) {
+    console.error('Error verificando reCAPTCHA:', error);
+    return res.status(500).json({
+      success: false,
+      message: 'Error de validación de captcha. Por favor inténtalo más tarde.',
+    });
+  }
+
+  const timeSinceCreated = Date.now() - (formCreatedAt || 0);
+  if (timeSinceCreated < 3000) {
+    return res.status(400).json({
+      success: false,
+      message: 'Por favor completa el formulario antes de enviar.',
+    });
+  }
 
   // Validaciones básicas
   if (!nombre || !email || !mensaje || !interes) {

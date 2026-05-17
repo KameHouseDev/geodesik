@@ -105,6 +105,20 @@ AWS_ACCESS_KEY_ID         # Credencial IAM para SES
 AWS_SECRET_ACCESS_KEY     # Secret de IAM
 SES_FROM_EMAIL            # Email de remitente (ventas@geodesik.cl)
 SES_TO_EMAIL              # Email destinatario (ventas@geodesik.cl)
+RECAPTCHA_SECRET_KEY      # Clave secreta de Google reCAPTCHA invisible
+```
+
+### Configuración de reCAPTCHA invisible
+En la raíz del proyecto, crea un archivo `.env` y agrega:
+
+```
+VITE_RECAPTCHA_SITE_KEY=tu_recaptcha_site_key_aqui
+```
+
+En el backend, crea o actualiza `backend/.env` con:
+
+```
+RECAPTCHA_SECRET_KEY=tu_recaptcha_secret_key_aqui
 ```
 
 ## 🌐 URLs
