@@ -13,9 +13,6 @@ const Contacto = () => {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [submitStatus, setSubmitStatus] = useState(null)
   const [recaptchaReady, setRecaptchaReady] = useState(false)
-  const [recaptchaMode, setRecaptchaMode] = useState(import.meta.env.VITE_RECAPTCHA_TYPE || 'v3')
-  const [recaptchaLoadFailed, setRecaptchaLoadFailed] = useState(false)
-  const captchaWidgetId = useRef(null)
   const formCreatedAt = useRef(Date.now())
   const siteKey = import.meta.env.VITE_RECAPTCHA_SITE_KEY
 
@@ -89,86 +86,32 @@ const Contacto = () => {
       return
     }
 
-    window.grecaptcha.ready(() => {
-      if (recaptchaMode === 'v2') {
-        if (captchaWidgetId.current === null) {
-          setSubmitStatus({
-            type: 'error',
-            message: 'Captcha no está preparado. Intenta de nuevo.',
-          })
-          setIsSubmitting(false)
-          return
-        }
-
-        try {
-          window.grecaptcha.execute(captchaWidgetId.current)
-        } catch (error) {
-          console.error('reCAPTCHA v2 execute failed:', error)
-          setSubmitStatus({
-            type: 'error',
-            message: 'Clave de reCAPTCHA inválida o no autorizada para este dominio. Revisa tu configuración en Google.',
-          })
-          setIsSubmitting(false)
-        }
-      } else {
-        window.grecaptcha.execute(siteKey, { action: 'contacto' })
-          .then(submitContact)
-          .catch((error) => {
-            console.error('reCAPTCHA failed:', error)
-            const invalidKey = error && String(error).includes('Invalid site key')
-            if (invalidKey) {
-              setRecaptchaMode('v2')
-              setSubmitStatus({
-                type: 'error',
-                message: 'Clave de reCAPTCHA v3 inválida o no autorizada. Se cambiará a invisible v2, intenta de nuevo.',
-              })
-            } else {
-              setSubmitStatus({
-                type: 'error',
-                message: 'No se pudo validar el captcha. Intenta nuevamente.',
-              })
-            }
-            setIsSubmitting(false)
-          })
-      }
-    })
+    try {
+      const token = await window.grecaptcha.execute(siteKey, { action: 'contacto' })
+      await submitContact(token)
+    } catch (error) {
+      console.error('reCAPTCHA error:', error)
+      setSubmitStatus({
+        type: 'error',
+        message: 'Error al validar reCAPTCHA. Verifica que tu clave sea válida y que el dominio esté autorizado.',
+      })
+      setIsSubmitting(false)
+    }
   }
 
   useEffect(() => {
     if (!siteKey) return
 
     const scriptId = 'recaptcha-script'
-    const desiredSrc = recaptchaMode === 'v2'
-      ? 'https://www.google.com/recaptcha/api.js?render=explicit'
-      : `https://www.google.com/recaptcha/api.js?render=${siteKey}`
+    const desiredSrc = `https://www.google.com/recaptcha/api.js?render=${siteKey}`
     const existingScript = document.getElementById(scriptId)
-
-    const renderInvisibleWidget = () => {
-      if (recaptchaMode === 'v2' && window.grecaptcha && window.grecaptcha.render && captchaWidgetId.current === null) {
-        captchaWidgetId.current = window.grecaptcha.render('recaptcha-container', {
-          sitekey: siteKey,
-          size: 'invisible',
-          callback: submitContact,
-        })
-      }
-    }
-
-    const prepareRecaptcha = () => {
-      if (!window.grecaptcha) return
-      window.grecaptcha.ready(() => {
-        renderInvisibleWidget()
-        setRecaptchaReady(true)
-      })
-    }
 
     if (existingScript) {
       if (existingScript.src === desiredSrc) {
-        prepareRecaptcha()
+        setRecaptchaReady(true)
         return
       }
       existingScript.remove()
-      captchaWidgetId.current = null
-      setRecaptchaReady(false)
     }
 
     const script = document.createElement('script')
@@ -176,12 +119,15 @@ const Contacto = () => {
     script.src = desiredSrc
     script.async = true
     script.defer = true
-    script.onload = prepareRecaptcha
+    script.onload = () => {
+      if (window.grecaptcha) {
+        setRecaptchaReady(true)
+      }
+    }
     script.onerror = () => {
-      setRecaptchaLoadFailed(true)
       setSubmitStatus({
         type: 'error',
-        message: 'No se pudo cargar reCAPTCHA. Verifica tu clave de sitio y que el dominio esté autorizado en Google.',
+        message: 'Error al cargar reCAPTCHA. Verifica tu clave de sitio v3 y que geodesik.cl esté autorizado.',
       })
     }
     document.body.appendChild(script)
@@ -190,7 +136,7 @@ const Contacto = () => {
       script.onload = null
       script.onerror = null
     }
-  }, [siteKey, recaptchaMode])
+  }, [siteKey])
 
   const contactInfo = [
     {
@@ -333,8 +279,6 @@ const Contacto = () => {
                 tabIndex="-1"
                 className="hidden"
               />
-
-              <div id="recaptcha-container" className="hidden" />
 
               {submitStatus && (
                 <div className={`mb-6 p-4 rounded-lg ${
