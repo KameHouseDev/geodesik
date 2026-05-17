@@ -132,9 +132,27 @@ const Contacto = () => {
       : `https://www.google.com/recaptcha/api.js?render=${siteKey}`
     const existingScript = document.getElementById(scriptId)
 
+    const renderInvisibleWidget = () => {
+      if (recaptchaMode === 'v2' && window.grecaptcha && window.grecaptcha.render && captchaWidgetId.current === null) {
+        captchaWidgetId.current = window.grecaptcha.render('recaptcha-container', {
+          sitekey: siteKey,
+          size: 'invisible',
+          callback: submitContact,
+        })
+      }
+    }
+
+    const prepareRecaptcha = () => {
+      if (!window.grecaptcha) return
+      window.grecaptcha.ready(() => {
+        renderInvisibleWidget()
+        setRecaptchaReady(true)
+      })
+    }
+
     if (existingScript) {
       if (existingScript.src === desiredSrc) {
-        setRecaptchaReady(true)
+        prepareRecaptcha()
         return
       }
       existingScript.remove()
@@ -147,18 +165,7 @@ const Contacto = () => {
     script.src = desiredSrc
     script.async = true
     script.defer = true
-    script.onload = () => {
-      if (recaptchaMode === 'v2') {
-        if (captchaWidgetId.current === null && window.grecaptcha && window.grecaptcha.render) {
-          captchaWidgetId.current = window.grecaptcha.render('recaptcha-container', {
-            sitekey: siteKey,
-            size: 'invisible',
-            callback: submitContact,
-          })
-        }
-      }
-      setRecaptchaReady(true)
-    }
+    script.onload = prepareRecaptcha
     document.body.appendChild(script)
 
     return () => {
