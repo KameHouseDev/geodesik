@@ -25,6 +25,8 @@ jobs:
 
       # 4. Build the application
       - name: Build the frontend application
+        env:
+          VITE_RECAPTCHA_SITE_KEY: ${{ secrets.VITE_RECAPTCHA_SITE_KEY }}
         run: npm run build
 
       # 5. Install backend dependencies
@@ -41,6 +43,8 @@ jobs:
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           SES_FROM_EMAIL: ${{ secrets.SES_FROM_EMAIL }}
           SES_TO_EMAIL: ${{ secrets.SES_TO_EMAIL }}
+          VITE_RECAPTCHA_SITE_KEY: ${{ secrets.VITE_RECAPTCHA_SITE_KEY }}
+          RECAPTCHA_SECRET_KEY: ${{ secrets.RECAPTCHA_SECRET_KEY }}
         run: |
           echo "$SSH_PRIVATE_KEY" > private_key.pem
           chmod 600 private_key.pem
@@ -61,6 +65,7 @@ jobs:
           ssh -o StrictHostKeyChecking=no -i private_key.pem admin@$LIGHTSAIL_IP "echo 'AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}' >> /var/www/backend/.env"
           ssh -o StrictHostKeyChecking=no -i private_key.pem admin@$LIGHTSAIL_IP "echo 'SES_FROM_EMAIL=${SES_FROM_EMAIL}' >> /var/www/backend/.env"
           ssh -o StrictHostKeyChecking=no -i private_key.pem admin@$LIGHTSAIL_IP "echo 'SES_TO_EMAIL=${SES_TO_EMAIL}' >> /var/www/backend/.env"
+          ssh -o StrictHostKeyChecking=no -i private_key.pem admin@$LIGHTSAIL_IP "echo 'RECAPTCHA_SECRET_KEY=${RECAPTCHA_SECRET_KEY}' >> /var/www/backend/.env"
           ssh -o StrictHostKeyChecking=no -i private_key.pem admin@$LIGHTSAIL_IP "echo 'CORS_ORIGIN=https://geodesik.cl' >> /var/www/backend/.env"
           
           # Install PM2 if not installed and start/restart backend

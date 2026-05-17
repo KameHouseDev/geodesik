@@ -105,6 +105,7 @@ AWS_ACCESS_KEY_ID         # Credencial IAM para SES
 AWS_SECRET_ACCESS_KEY     # Secret de IAM
 SES_FROM_EMAIL            # Email de remitente (ventas@geodesik.cl)
 SES_TO_EMAIL              # Email destinatario (ventas@geodesik.cl)
+VITE_RECAPTCHA_SITE_KEY   # Clave de sitio reCAPTCHA invisible para el build frontend
 RECAPTCHA_SECRET_KEY      # Clave secreta de Google reCAPTCHA invisible
 ```
 
