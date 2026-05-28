@@ -172,4 +172,4 @@ pm2 logs geodesik-backend
 
 ## 📄 Licencia
 
-Propietario - Geodesik © 2026   
+Propietario - Geodesik © 2026    
