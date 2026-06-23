@@ -327,6 +327,8 @@ const Configurador = () => {
                     key={imagenActual}
                     src={imagenActual}
                     alt="Preview producto"
+                    loading="lazy"
+                    decoding="async"
                     className="w-full h-full object-cover transition-opacity duration-500"
                   />
                 ) : (
