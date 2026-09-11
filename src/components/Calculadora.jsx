@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { FaTruck, FaMapMarkerAlt, FaWhatsapp } from 'react-icons/fa'
+import { trackWhatsAppClick } from '../lib/tracking'
 
 const regiones = [
   'Región Metropolitana (Santiago)',
@@ -75,6 +76,7 @@ const Calculadora = () => {
                 href={`https://wa.me/+56939036058?text=${encodeURIComponent(mensajeWsp)}`}
                 target="_blank"
                 rel="noopener noreferrer"
+                onClick={() => trackWhatsAppClick('calculadora_despacho')}
                 className="w-full flex items-center justify-center gap-2 px-6 py-3 bg-green-500 hover:bg-green-600 text-white font-semibold rounded-xl transform hover:scale-105 transition-all duration-300 shadow-lg text-sm"
               >
                 <FaWhatsapp size={18} />

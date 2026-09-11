@@ -6,6 +6,7 @@ import tinaja6 from '../assets/images/tinaja_6.WebP'
 import sauna1 from '../assets/images/sauna_1.WebP'
 import sauna3 from '../assets/images/sauna_3.WebP'
 import sauna5 from '../assets/images/sauna_5.WebP'
+import { trackWhatsAppClick } from '../lib/tracking'
 
 const imagenesPorSeleccion = {
   tina: { '2p': tinaMaiten, '4p': tinaMatanza, '6p': tinaja6 },
@@ -406,6 +407,7 @@ const Configurador = () => {
                   href={pasoCompleto ? `https://wa.me/+56939036058?text=${encodeURIComponent(mensajeWsp())}` : '#configurador'}
                   target={pasoCompleto ? '_blank' : '_self'}
                   rel="noopener noreferrer"
+                  onClick={() => { if (pasoCompleto) trackWhatsAppClick('configurador') }}
                   className={`mt-2 w-full flex items-center justify-center gap-2 px-6 py-3.5 font-bold rounded-xl transition-all duration-300 text-sm ${pasoCompleto ? 'bg-green-500 hover:bg-green-600 text-white shadow-lg shadow-green-500/20 hover:scale-105' : 'bg-white/5 text-white/30 cursor-not-allowed border border-white/10'}`}
                 >
                   <FaWhatsapp size={18} />

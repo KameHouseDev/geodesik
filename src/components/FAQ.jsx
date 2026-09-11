@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { FaChevronDown, FaChevronUp, FaWhatsapp } from 'react-icons/fa'
+import { trackWhatsAppClick } from '../lib/tracking'
 
 const faqs = [
   {
@@ -71,6 +72,7 @@ const FaqItem = ({ faq, index }) => {
 const FAQ = () => {
   const handleWhatsApp = () => {
     const msg = encodeURIComponent('Hola! Tengo una consulta sobre sus tinas y saunas.')
+    trackWhatsAppClick('faq')
     window.open(`https://wa.me/+56939036058?text=${msg}`, '_blank')
   }
 

@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { FaWhatsapp, FaInstagram, FaComment, FaTimes } from 'react-icons/fa'
+import { trackWhatsAppClick } from '../lib/tracking'
 
 const FloatingButtons = () => {
   const [isOpen, setIsOpen] = useState(false)
@@ -27,6 +28,7 @@ const FloatingButtons = () => {
           href="https://wa.me/+56939036058"
           target="_blank"
           rel="noopener noreferrer"
+          onClick={() => trackWhatsAppClick('boton_flotante')}
           className="flex items-center gap-3 px-5 py-3 bg-green-500 hover:bg-green-600 text-white rounded-full shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300"
         >
           <FaWhatsapp size={24} />

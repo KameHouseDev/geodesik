@@ -6,6 +6,7 @@ import tinaja6 from '../assets/images/tinaja_6.WebP';
 import sauna1 from '../assets/images/sauna_1.WebP';
 import sauna3 from '../assets/images/sauna_3.WebP';
 import sauna5 from '../assets/images/sauna_5.WebP';
+import { trackWhatsAppClick } from '../lib/tracking';
 
 const Precios = () => {
   const productos = [
@@ -80,6 +81,7 @@ const Precios = () => {
   const handleWhatsAppClick = (producto) => {
     const mensaje = `Hola! Estoy interesado en cotizar el producto: ${producto.titulo}`;
     const url = `https://wa.me/+56939036058?text=${encodeURIComponent(mensaje)}`;
+    trackWhatsAppClick('precios');
     window.open(url, '_blank');
   };
 

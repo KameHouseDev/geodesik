@@ -5,6 +5,30 @@
     <link rel="icon" type="image/png" href="/favicon.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
+    <!-- ==============================================================
+         Google tag (gtag.js) — Google Ads
+         Único lugar donde viven el ID de conversión y las etiquetas;
+         src/lib/tracking.js las lee desde window.GEODESIK_ADS.
+
+         Las etiquetas corresponden a las acciones de conversión
+         "Solicitud de presupuesto (1)" (formulario) y "(2)" (WhatsApp)
+         de la cuenta de Google Ads 482-059-2488.
+         ============================================================== -->
+    <script>
+      window.GEODESIK_ADS = {
+        id: 'AW-480858544',
+        labels: {
+          formulario: 'GbJNCNX1xvMcELCjpeUB',
+          whatsapp: 'SSN4CNj1xvMcELCjpeUB',
+        },
+      };
+      window.dataLayer = window.dataLayer || [];
+      function gtag() { dataLayer.push(arguments); }
+      gtag('js', new Date());
+      gtag('config', window.GEODESIK_ADS.id);
+    </script>
+    <script async src="https://www.googletagmanager.com/gtag/js?id=AW-480858544"></script>
+
     <!-- SEO primario -->
     <title>Venta de Tinajas y Saunas de Madera en Chile | Fabricación Artesanal | Geodesik</title>
     <meta name="description" content="Venta y fabricación de tinajas y saunas de madera en Santiago, Chile. Tinajas para 2, 4 y 6 personas. Saunas finlandeses artesanales. Calefacción a leña, gas o eléctrica. Envío a todo Chile. ¡Cotiza GRATIS hoy!" />
