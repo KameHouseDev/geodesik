@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react'
 import { FaMapMarkerAlt, FaPhone, FaEnvelope, FaClock } from 'react-icons/fa'
+import { trackFormularioEnviado } from '../lib/tracking'
 
 const Contacto = () => {
   const [formData, setFormData] = useState({
@@ -40,6 +41,7 @@ const Contacto = () => {
       const data = await response.json()
 
       if (data.success) {
+        trackFormularioEnviado()
         setSubmitStatus({ type: 'success', message: data.message })
         setFormData({
           nombre: '',

@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { FaWhatsapp, FaTimes } from 'react-icons/fa'
+import { trackWhatsAppClick } from '../lib/tracking'
 
 const ExitIntentPopup = () => {
   const [visible, setVisible] = useState(false)
@@ -37,6 +38,7 @@ const ExitIntentPopup = () => {
 
   const handleWhatsApp = () => {
     const msg = encodeURIComponent('Hola! Estaba mirando su web y me gustaría cotizar una tina o sauna.')
+    trackWhatsAppClick('popup_salida')
     window.open(`https://wa.me/+56939036058?text=${msg}`, '_blank')
     handleDismiss()
   }

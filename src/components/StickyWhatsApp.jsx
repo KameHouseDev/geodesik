@@ -1,8 +1,10 @@
 import { FaWhatsapp } from 'react-icons/fa'
+import { trackWhatsAppClick } from '../lib/tracking'
 
 const StickyWhatsApp = () => {
   const handleClick = () => {
     const msg = encodeURIComponent('Hola! Me interesa cotizar una tina o sauna de madera.')
+    trackWhatsAppClick('barra_sticky_movil')
     window.open(`https://wa.me/+56939036058?text=${msg}`, '_blank')
   }
 

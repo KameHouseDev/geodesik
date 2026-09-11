@@ -1,5 +1,6 @@
 import { FaStar, FaQuoteLeft } from 'react-icons/fa'
 import { FaWhatsapp } from 'react-icons/fa'
+import { trackWhatsAppClick } from '../lib/tracking'
 
 const testimonios = [
   {
@@ -55,6 +56,7 @@ const Stars = ({ count }) => (
 const Testimonios = () => {
   const handleWhatsApp = () => {
     const msg = encodeURIComponent('Hola! Vi los testimonios de clientes en su web y me gustaría cotizar un producto.')
+    trackWhatsAppClick('testimonios')
     window.open(`https://wa.me/+56939036058?text=${msg}`, '_blank')
   }
 
