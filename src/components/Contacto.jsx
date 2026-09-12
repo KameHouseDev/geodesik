@@ -303,6 +303,14 @@ const Contacto = () => {
               >
                 {isSubmitting ? 'Enviando...' : 'Enviar Mensaje'}
               </button>
+
+              <p className="mt-5 text-center text-xs text-gold-light/60 leading-relaxed">
+                Este sitio está protegido por reCAPTCHA y se aplican la{' '}
+                <a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer" className="underline hover:text-gold transition-colors">Política de Privacidad</a>{' '}
+                y los{' '}
+                <a href="https://policies.google.com/terms" target="_blank" rel="noopener noreferrer" className="underline hover:text-gold transition-colors">Términos de Servicio</a>{' '}
+                de Google.
+              </p>
             </form>
           </div>
         </div>
