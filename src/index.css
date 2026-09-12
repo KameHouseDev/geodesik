@@ -134,3 +134,12 @@
     color: white;
   }
 }
+
+/* El badge flotante de reCAPTCHA v3 se posiciona en fixed bottom:14px right:0
+   con z-index 2000000000, o sea la misma esquina que el boton flotante de
+   WhatsApp y, en movil, encima de la barra sticky de cotizacion. Google permite
+   ocultarlo siempre que la atribucion quede visible en el flujo del usuario:
+   esta bajo el boton de enviar del formulario de contacto. */
+.grecaptcha-badge {
+  visibility: hidden;
+}
